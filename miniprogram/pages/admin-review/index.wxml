@@ -1,0 +1,49 @@
+<view wx:if="{{adminAccessState === 'checking'}}" class="admin-access-state">正在核验掌勺人权限…</view>
+<view wx:if="{{adminAccessState === 'error'}}" class="admin-access-state">权限核验失败，请重试<button bindtap="refreshAdminAccess">重试核验</button></view>
+<block wx:if="{{adminAccessState === 'ready'}}">
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="ar-page safe-bottom">
+  <!-- 顶栏状态与版本提醒 -->
+  <view class="ar-header mori-card">
+    <view class="flex-between">
+      <view>
+        <view class="title">今日餐次掌勺审核</view>
+        <view class="version-tip">{{review.session.mealType === 'LUNCH' ? '午餐' : '晚餐'}}</view>
+      </view>
+      <view class="header-btns">
+        <button class="mini-btn-accent" bindtap="onOpenAddTempDish">+ 当餐临时菜</button>
+      </view>
+    </view>
+    <view wx:if="{{hasDirtyDraft}}" class="dirty-warning">
+      ⚠ 当前有未保存的审核草稿，定时自动刷新已暂停
+    </view>
+    <view wx:if="{{versionConflictMsg}}" class="conflict-alert">
+      {{versionConflictMsg}}
+    </view>
+  </view>
+
+  <view wx:if="{{review.hasNoteUpdates}}" class="mori-card">备注已更新，请注意：请查看各菜品下的成员备注。原审核结果保留。</view>
+  <!-- 菜品卡片列表 -->
+  <view class="review-cards-list">
+    <block wx:for="{{review.dishes}}" wx:key="dishId">
+      <review-card 
+        dish="{{item}}" 
+        bind:decision="onSingleDecision"
+        bind:quantityChange="onDraftQuantityChange" />
+    </block>
+
+    <view wx:if="{{!review.dishes || review.dishes.length === 0}}" class="empty-view">
+      <text class="empty-icon">🍳</text>
+      <text>当前餐次尚无人点菜</text>
+    </view>
+  </view>
+
+  <!-- 底部批量原子提交栏 -->
+  <view class="bottom-bar safe-bottom" wx:if="{{review.dishes && review.dishes.length > 0}}">
+    <view wx:if="{{hasTemporaryAdditions}}" class="addition-notice">临时加菜</view>
+    <button class="mori-btn-primary w-full" bindtap="onSubmitAllReview" loading="{{submitting}}">
+      批量保存并公布决议
+    </button>
+  </view>
+</view>
+</block>

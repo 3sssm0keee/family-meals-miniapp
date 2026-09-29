@@ -1,0 +1,120 @@
+.pm-page {
+  padding: 24rpx;
+  min-height: 100vh;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2C332D;
+}
+.sub-time {
+  font-size: 22rpx;
+  color: #8C968E;
+  margin-top: 6rpx;
+}
+.items-list {
+  margin-top: 10rpx;
+}
+.item-card {
+  padding: 24rpx;
+}
+.item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dish-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #2C332D;
+}
+.item-variant {
+  font-size: 24rpx;
+  color: #5B8266;
+  margin-top: 8rpx;
+}
+.cancel-msg {
+  font-size: 22rpx;
+  color: #D9534F;
+  margin-top: 10rpx;
+  background: #FDF2F2;
+  padding: 8rpx 14rpx;
+  border-radius: 8rpx;
+}
+.note-card {
+  margin-top: 10rpx;
+}
+.note-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2C332D;
+}
+.btn-edit-note {
+  font-size: 24rpx;
+  color: #5B8266;
+  font-weight: 600;
+}
+.note-content {
+  font-size: 26rpx;
+  color: #555E57;
+  margin-top: 14rpx;
+  background: #F8F6F1;
+  padding: 16rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid #E8E3DA;
+}
+.bottom-box {
+  margin-top: 40rpx;
+}
+.w-full {
+  width: 100% !important;
+  display: block;
+}
+.reorder-prompt-card {
+  background: #FDF4E7;
+  border: 1rpx solid #E8D3B5;
+  padding: 26rpx;
+  margin-top: 20rpx;
+}
+.reorder-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #B57732;
+}
+.reorder-desc {
+  font-size: 24rpx;
+  color: #555E57;
+  margin-top: 8rpx;
+  line-height: 1.4;
+}
+.mt-3 {
+  margin-top: 20rpx;
+}
+
+/* 未点餐空状态卡片 */
+.empty-pm-card {
+  padding: 60rpx 36rpx;
+  text-align: center;
+  margin-top: 20rpx;
+}
+.empty-icon {
+  font-size: 72rpx;
+  margin-bottom: 20rpx;
+}
+.empty-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2C332D;
+  margin-bottom: 12rpx;
+}
+.empty-desc {
+  font-size: 24rpx;
+  color: #747D75;
+  line-height: 1.5;
+  margin-bottom: 30rpx;
+}

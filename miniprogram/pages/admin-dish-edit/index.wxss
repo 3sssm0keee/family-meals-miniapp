@@ -1,0 +1,260 @@
+.ade-page {
+  padding: 24rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 顶部品牌栏 */
+.brand-top-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.mascot-badge {
+  font-size: 48rpx;
+  margin-right: 12rpx;
+}
+.brand-logo-text-group {
+  display: flex;
+  flex-direction: column;
+}
+.brand-logo-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #2D2B2A;
+  letter-spacing: 0.5rpx;
+  white-space: nowrap;
+}
+.brand-logo-sub {
+  font-size: 20rpx;
+  color: #8E827A;
+  letter-spacing: 1rpx;
+  margin-top: 2rpx;
+}
+
+/* 横幅 */
+.tobacco-banner {
+  background: linear-gradient(135deg, #F07C56 0%, #EE6F47 100%);
+  border-radius: 28rpx;
+  padding: 32rpx 28rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8rpx 24rpx rgba(238, 123, 87, 0.28);
+  margin-bottom: 24rpx;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+}
+.banner-content {
+  flex: 1;
+}
+.banner-main-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  margin-bottom: 8rpx;
+  letter-spacing: 1rpx;
+}
+.banner-subtitle {
+  font-size: 22rpx;
+  opacity: 0.92;
+  line-height: 1.4;
+}
+.banner-illus-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 16rpx;
+}
+.illus-bubble {
+  background: #FFFFFF;
+  color: #EE7B57;
+  font-size: 18rpx;
+  font-weight: 700;
+  padding: 6rpx 14rpx;
+  border-radius: 16rpx;
+  white-space: nowrap;
+  margin-bottom: 8rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+}
+.illus-bowl-wrap {
+  width: 90rpx;
+  height: 90rpx;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.illus-bowl-face {
+  font-size: 48rpx;
+}
+
+/* 表单卡片 */
+.form-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  border: 1rpx solid #F3EBE2;
+  box-shadow: 0 4rpx 16rpx rgba(184, 150, 126, 0.08);
+  margin-bottom: 24rpx;
+}
+.form-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.form-label-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #2D2B2A;
+  margin-bottom: 12rpx;
+}
+.form-label-tip {
+  font-size: 20rpx;
+  color: #A69B92;
+}
+
+/* 图片上传区 */
+.dish-image-uploader {
+  position: relative;
+  width: 100%;
+  height: 280rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  background: #F7EFE8;
+  margin-top: 14rpx;
+  border: 1rpx solid #EBDED3;
+}
+.preview-img {
+  width: 100%;
+  height: 100%;
+}
+.upload-badge {
+  position: absolute;
+  bottom: 16rpx;
+  right: 16rpx;
+  background: rgba(0, 0, 0, 0.65);
+  color: #FFFFFF;
+  font-size: 22rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-weight: 600;
+}
+
+/* 输入框 */
+.form-group {
+  margin-bottom: 20rpx;
+}
+.form-input {
+  height: 76rpx;
+  background: #FAF6F1;
+  border-radius: 16rpx;
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  border: 1rpx solid #EBE0D5;
+  color: #2D2B2A;
+  box-sizing: border-box;
+}
+.form-textarea {
+  width: 100%;
+  height: 140rpx;
+  background: #FAF6F1;
+  border-radius: 16rpx;
+  padding: 16rpx;
+  font-size: 24rpx;
+  border: 1rpx solid #EBE0D5;
+  color: #2D2B2A;
+  box-sizing: border-box;
+}
+
+/* 标签选项 */
+.category-options-row, .tag-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+  margin-top: 8rpx;
+}
+.cat-chip, .tag-chip {
+  padding: 8rpx 24rpx;
+  border-radius: 24rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #6E625A;
+  background: #F5EFE7;
+  border: 1rpx solid #E6DDD2;
+  transition: all 0.2s;
+}
+.cat-chip.active, .tag-chip.active {
+  background: #EE7B57;
+  color: #FFFFFF;
+  border-color: #EE7B57;
+  box-shadow: 0 4rpx 12rpx rgba(238, 123, 87, 0.25);
+}
+
+/* 规格卡片 */
+.v-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+.btn-add-v {
+  font-size: 22rpx;
+  color: #EE7B57;
+  background: #FFF2ED;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-weight: 700;
+  border: 1rpx solid #F8D8CE;
+}
+.v-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+.v-row-card {
+  background: #FAF6F1;
+  border-radius: 18rpx;
+  padding: 18rpx;
+  border: 1rpx solid #EBE0D5;
+}
+.v-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+.v-index-tag {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #EE7B57;
+}
+.v-btn-del {
+  font-size: 20rpx;
+  color: #D9534F;
+  font-weight: 600;
+}
+.mt-2 {
+  margin-top: 12rpx;
+}
+
+/* 底部保存按钮 */
+.submit-box {
+  margin: 30rpx 0 20rpx;
+}
+.btn-save-dish {
+  width: 100% !important;
+  height: 90rpx !important;
+  line-height: 90rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  background: linear-gradient(135deg, #F07C56 0%, #EE6F47 100%);
+  color: #FFFFFF;
+  border-radius: 45rpx;
+  box-shadow: 0 10rpx 28rpx rgba(238, 123, 87, 0.35);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}

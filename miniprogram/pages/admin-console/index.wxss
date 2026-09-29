@@ -1,0 +1,378 @@
+.admin-console-page {
+  padding: 24rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #FFF9F4;
+}
+
+/* 1. 顶部品牌栏 */
+.brand-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+.mascot-badge {
+  font-size: 48rpx;
+  margin-right: 12rpx;
+}
+.brand-logo-text-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.brand-logo-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #2D2B2A;
+  letter-spacing: 0.5rpx;
+}
+.brand-logo-sub {
+  font-size: 20rpx;
+  color: #8E827A;
+  letter-spacing: 1rpx;
+  margin-top: 2rpx;
+}
+.role-switch-badge {
+  font-size: 22rpx;
+  color: #EE7B57;
+  background: #FFF4EE;
+  padding: 8rpx 18rpx;
+  border-radius: 20rpx;
+  border: 1rpx solid #F6D8CE;
+  font-weight: 700;
+}
+
+/* 2. 掌勺人暗橙黑金主题横幅 */
+.admin-banner { display: flex; align-items: center; gap: 24rpx; }
+.admin-banner .banner-content { flex: 1; min-width: 0; }
+.admin-banner .banner-main-title { font-size: 34rpx; font-weight: 800; line-height: 1.4; }
+.admin-banner .banner-subtitle { margin-top: 14rpx; font-size: 24rpx; line-height: 1.7; color: #e2d9d2; }
+.admin-banner .banner-illus-box { flex: 0 0 130rpx; text-align: center; }
+.admin-banner .illus-bubble { display: inline-block; padding: 8rpx 12rpx; border-radius: 18rpx; font-size: 18rpx; }
+.admin-banner .illus-bowl-face { margin-top: 18rpx; font-size: 64rpx; }
+.admin-banner {
+  background: linear-gradient(135deg, #2D2B2A 0%, #443E3B 100%) !important;
+  border: 1rpx solid #574F4B !important;
+  box-shadow: 0 8rpx 24rpx rgba(45, 43, 42, 0.22) !important;
+}
+.admin-banner .banner-main-title {
+  color: #FFA382 !important;
+}
+.admin-banner .illus-bubble {
+  color: #2D2B2A !important;
+  background: #FFA382 !important;
+}
+.banner-meal-info {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 14rpx;
+}
+.meal-badge {
+  background: rgba(238, 123, 87, 0.28);
+  color: #FFA382;
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+  font-weight: 700;
+}
+.date-badge {
+  background: rgba(255, 255, 255, 0.15);
+  color: #E2D9D2;
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+}
+
+/* 3. 今日点餐动态看板 */
+.status-kpi-card {
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+.card-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 14rpx;
+  border-bottom: 1rpx solid #F5ECE3;
+}
+.section-bold {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #2D2B2A;
+}
+.section-tag {
+  font-size: 20rpx;
+  background: #FFF4EE;
+  color: #EE7B57;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+  font-weight: 700;
+}
+.kpi-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+.kpi-item {
+  flex: 1;
+  background: #FDF9F5;
+  border-radius: 20rpx;
+  padding: 20rpx 12rpx;
+  text-align: center;
+  border: 1rpx solid #F4EBE2;
+}
+.kpi-num {
+  font-size: 38rpx;
+  font-weight: 900;
+  color: #2D2B2A;
+  line-height: 1.2;
+}
+.kpi-num.highlight {
+  color: #EE7B57;
+}
+.kpi-unit {
+  font-size: 20rpx;
+  font-weight: normal;
+  color: #8E827A;
+  margin-left: 4rpx;
+}
+.kpi-label {
+  font-size: 22rpx;
+  color: #554D47;
+  font-weight: 700;
+  margin-top: 6rpx;
+}
+.kpi-sub {
+  font-size: 18rpx;
+  color: #9E9289;
+  margin-top: 6rpx;
+}
+.kpi-sub-green {
+  font-size: 18rpx;
+  color: #52C41A;
+  font-weight: 700;
+  margin-top: 6rpx;
+}
+.kpi-sub-accent {
+  font-size: 18rpx;
+  color: #EE7B57;
+  font-weight: 700;
+  margin-top: 6rpx;
+}
+
+/* 4. 核心功能矩阵 */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+  margin-bottom: 18rpx;
+  margin-top: 10rpx;
+}
+.section-title-bold {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #2D2B2A;
+}
+.section-title-sub {
+  font-size: 22rpx;
+  color: #9A8E85;
+}
+.admin-modules-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-bottom: 28rpx;
+}
+.module-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  border: 1rpx solid #F3EBE2;
+  box-shadow: 0 4rpx 16rpx rgba(184, 150, 126, 0.08);
+  transition: all 0.2s;
+}
+.module-card:active {
+  transform: scale(0.98);
+}
+.module-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  background: #FFF4EE;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+.module-info {
+  flex: 1;
+}
+.module-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 6rpx;
+}
+.module-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #2D2B2A;
+}
+.badge-pending {
+  background: #EE7B57;
+  color: #FFFFFF;
+  font-size: 18rpx;
+  font-weight: 700;
+  padding: 2rpx 12rpx;
+  border-radius: 12rpx;
+}
+.badge-tag {
+  background: #FDF0E9;
+  color: #EE7B57;
+  font-size: 18rpx;
+  font-weight: 700;
+  padding: 2rpx 10rpx;
+  border-radius: 10rpx;
+  border: 1rpx solid #F7D5C7;
+}
+.module-desc {
+  font-size: 22rpx;
+  color: #8E827A;
+  line-height: 1.4;
+}
+.module-arrow {
+  font-size: 36rpx;
+  color: #C7B8AD;
+  font-weight: bold;
+}
+
+/* 5. 快捷菜谱维护卡片 */
+.quick-dishes-card {
+  padding: 24rpx;
+  margin-bottom: 28rpx;
+}
+.quick-dishes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 14rpx;
+  border-bottom: 1rpx solid #F5ECE3;
+}
+.title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.btn-quick-add {
+  background: #FFF4EE !important;
+  color: #EE7B57 !important;
+  border: 1rpx solid #F5D2C5 !important;
+  font-size: 22rpx !important;
+  font-weight: 700 !important;
+  border-radius: 24rpx !important;
+  padding: 8rpx 20rpx !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+}
+.quick-dishes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+.quick-dish-item {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid #FAF4EE;
+}
+.quick-dish-item:last-child {
+  border-bottom: none;
+}
+.quick-dish-thumb {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 16rpx;
+  flex-shrink: 0;
+  background: #F3EBE2;
+}
+.quick-dish-main {
+  flex: 1;
+  min-width: 0;
+}
+.quick-dish-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+.quick-dish-name {
+  font-size: 26rpx;
+  font-weight: 800;
+  color: #2D2B2A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.quick-dish-category {
+  font-size: 18rpx;
+  background: #F4ECE3;
+  color: #7A6F68;
+  padding: 2rpx 8rpx;
+  border-radius: 8rpx;
+}
+.quick-dish-desc {
+  font-size: 20rpx;
+  color: #9A8E85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4rpx;
+}
+.quick-dish-variants {
+  font-size: 18rpx;
+  color: #B5A9A0;
+  margin-top: 4rpx;
+}
+.btn-quick-edit {
+  font-size: 22rpx !important;
+  padding: 10rpx 22rpx !important;
+  height: auto !important;
+  line-height: 1.4 !important;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* 6. 底部操作 */
+.bottom-action-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-top: 20rpx;
+  margin-bottom: 40rpx;
+}
+.btn-return-home {
+  width: 100% !important;
+  height: 84rpx !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24rpx;
+  box-sizing: border-box;
+  line-height: 1.3 !important;
+  font-size: 28rpx !important;
+  font-weight: 700 !important;
+}
+.btn-toggle-view {
+  background: transparent !important;
+  color: #9A8E85 !important;
+  font-size: 22rpx !important;
+  text-decoration: underline;
+  padding: 8rpx !important;
+  margin: 0 !important;
+}

@@ -1,0 +1,1771 @@
+{
+  "notice": "Synthetic schema examples; not server responses or a complete connected dataset. Review example demonstrates 3/2/4 counting. Binary upload body is a placeholder.",
+  "operations": {
+    "login": {
+      "method": "POST",
+      "path": "/auth/login",
+      "pathParams": {},
+      "query": {},
+      "headers": {},
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "code": "a"
+      },
+      "response": {
+        "data": {
+          "token": "a",
+          "expiresAt": "2026-09-11T06:00:00.000Z",
+          "user": {
+            "id": "example_aaaaaaaa",
+            "displayName": "张三",
+            "avatar": {
+              "fileId": "example_aaaaaaaa",
+              "url": "https://example.invalid/signed-image",
+              "expiresAt": "2026-09-11T04:00:00.000Z"
+            }
+          }
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "uploadAvatar": {
+      "method": "POST",
+      "path": "/me/avatar",
+      "pathParams": {},
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "multipart/form-data",
+      "body": {
+        "file": "<binary image bytes: multipart file>"
+      },
+      "response": {
+        "data": {
+          "id": "example_aaaaaaaa",
+          "displayName": "张三",
+          "avatar": {
+            "fileId": "example_aaaaaaaa",
+            "url": "https://example.invalid/signed-image",
+            "expiresAt": "2026-09-11T04:00:00.000Z"
+          }
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getMe": {
+      "method": "GET",
+      "path": "/me",
+      "pathParams": {},
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "id": "example_aaaaaaaa",
+          "displayName": "张三",
+          "avatar": {
+            "fileId": "example_aaaaaaaa",
+            "url": "https://example.invalid/signed-image",
+            "expiresAt": "2026-09-11T04:00:00.000Z"
+          }
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "updateMe": {
+      "method": "PATCH",
+      "path": "/me",
+      "pathParams": {},
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "displayName": "张三"
+      },
+      "response": {
+        "data": {
+          "id": "example_aaaaaaaa",
+          "displayName": "张三",
+          "avatar": {
+            "fileId": "example_aaaaaaaa",
+            "url": "https://example.invalid/signed-image",
+            "expiresAt": "2026-09-11T04:00:00.000Z"
+          }
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listMyFamilies": {
+      "method": "GET",
+      "path": "/me/families",
+      "pathParams": {},
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": [],
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "createFamily": {
+      "method": "POST",
+      "path": "/families",
+      "pathParams": {},
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 201,
+      "contentType": "application/json",
+      "body": {
+        "name": "红烧肉"
+      },
+      "response": {
+        "data": {
+          "id": "example_aaaaaaaa",
+          "name": "红烧肉",
+          "memberId": "example_aaaaaaaa",
+          "role": "ADMIN",
+          "accessExpiresAt": "2026-09-11T04:00:00.000Z"
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listDishes": {
+      "method": "GET",
+      "path": "/families/{familyId}/dishes",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "page": 1,
+        "pageSize": 1,
+        "q": "a",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "items": [],
+          "page": 1,
+          "pageSize": 1,
+          "total": 0
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getDish": {
+      "method": "GET",
+      "path": "/families/{familyId}/dishes/{dishId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa"
+      },
+      "query": {
+        "sessionId": "example_aaaaaaaa"
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "id": "dish_1",
+          "name": "红烧肉",
+          "description": "家常菜",
+          "image": null,
+          "isAvailable": true,
+          "kind": "PERMANENT",
+          "originSessionId": null,
+          "version": 1,
+          "deletedAt": null,
+          "variants": [
+            {
+              "id": "variant_1",
+              "name": "普通版",
+              "portionDescription": "一份约供两人分享",
+              "description": "家常口味",
+              "isAvailable": true,
+              "version": 1,
+              "deletedAt": null
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listAdminDishes": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/dishes",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "page": 1,
+        "pageSize": 1,
+        "q": "a",
+        "includeDeleted": true,
+        "onlyDeleted": true,
+        "sessionId": "example_aaaaaaaa"
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "items": [],
+          "page": 1,
+          "pageSize": 1,
+          "total": 0,
+          "selectableCount": 0
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "createDish": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/dishes",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 201,
+      "contentType": "application/json",
+      "body": {
+        "name": "红烧肉",
+        "description": "示例说明",
+        "imageFileId": null,
+        "isAvailable": true,
+        "variants": [
+          {
+            "name": "普通版",
+            "portionDescription": "一份约供两人分享",
+            "description": "家常口味",
+            "isAvailable": true
+          }
+        ]
+      },
+      "response": {
+        "data": {
+          "id": "dish_1",
+          "name": "红烧肉",
+          "description": "家常菜",
+          "image": null,
+          "isAvailable": true,
+          "kind": "PERMANENT",
+          "originSessionId": null,
+          "version": 1,
+          "deletedAt": null,
+          "variants": [
+            {
+              "id": "variant_1",
+              "name": "普通版",
+              "portionDescription": "一份约供两人分享",
+              "description": "家常口味",
+              "isAvailable": true,
+              "version": 1,
+              "deletedAt": null
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getDishDeletionPreview": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/dishes/{dishId}/deletion-preview",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "dishId": "example_aaaaaaaa",
+          "name": "红烧肉",
+          "expectedVersion": 1,
+          "deletedAt": "2026-09-11T04:00:00.000Z",
+          "variantCount": 0,
+          "cartItemCount": 0,
+          "submittedItemCount": 0,
+          "menuItemCount": 0,
+          "pendingReviewItemCount": 0,
+          "confirmedItemCount": 0,
+          "hasImage": true
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getAdminDish": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/dishes/{dishId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "id": "dish_1",
+          "name": "红烧肉",
+          "description": "家常菜",
+          "image": null,
+          "isAvailable": true,
+          "kind": "PERMANENT",
+          "originSessionId": null,
+          "version": 1,
+          "deletedAt": null,
+          "variants": [
+            {
+              "id": "variant_1",
+              "name": "普通版",
+              "portionDescription": "一份约供两人分享",
+              "description": "家常口味",
+              "isAvailable": true,
+              "version": 1,
+              "deletedAt": null
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "updateDish": {
+      "method": "PATCH",
+      "path": "/families/{familyId}/admin/dishes/{dishId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "expectedVersion": 1,
+        "name": "红烧肉",
+        "description": "示例说明",
+        "imageFileId": "example_aaaaaaaa",
+        "isAvailable": true
+      },
+      "response": {
+        "data": {
+          "id": "dish_1",
+          "name": "红烧肉",
+          "description": "家常菜",
+          "image": null,
+          "isAvailable": true,
+          "kind": "PERMANENT",
+          "originSessionId": null,
+          "version": 2,
+          "deletedAt": null,
+          "variants": [
+            {
+              "id": "variant_1",
+              "name": "普通版",
+              "portionDescription": "一份约供两人分享",
+              "description": "家常口味",
+              "isAvailable": true,
+              "version": 1,
+              "deletedAt": null
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "deleteDish": {
+      "method": "DELETE",
+      "path": "/families/{familyId}/admin/dishes/{dishId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa"
+      },
+      "query": {
+        "expectedVersion": 1
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "ok": true
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "createVariant": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/dishes/{dishId}/variants",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 201,
+      "contentType": "application/json",
+      "body": {
+        "name": "红烧肉",
+        "portionDescription": "一份约供两人分享",
+        "description": "示例说明",
+        "isAvailable": true
+      },
+      "response": {
+        "data": {
+          "id": "variant_1",
+          "name": "普通版",
+          "portionDescription": "一份约供两人分享",
+          "description": "家常口味",
+          "isAvailable": true,
+          "version": 1,
+          "deletedAt": null
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "updateVariant": {
+      "method": "PATCH",
+      "path": "/families/{familyId}/admin/dishes/{dishId}/variants/{variantId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa",
+        "variantId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "expectedVersion": 1,
+        "name": "红烧肉",
+        "portionDescription": "一份约供两人分享",
+        "description": "示例说明",
+        "isAvailable": true
+      },
+      "response": {
+        "data": {
+          "id": "variant_1",
+          "name": "普通版",
+          "portionDescription": "一份约供两人分享",
+          "description": "家常口味",
+          "isAvailable": true,
+          "version": 2,
+          "deletedAt": null
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "deleteVariant": {
+      "method": "DELETE",
+      "path": "/families/{familyId}/admin/dishes/{dishId}/variants/{variantId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa",
+        "variantId": "example_aaaaaaaa"
+      },
+      "query": {
+        "expectedVersion": 1
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "ok": true
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "ensureSession": {
+      "method": "POST",
+      "path": "/families/{familyId}/meal-sessions",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "serviceDate": "2026-09-11",
+        "mealType": "LUNCH"
+      },
+      "response": {
+        "data": {
+          "id": "meal_1",
+          "serviceDate": "2026-09-11",
+          "mealType": "LUNCH",
+          "timezone": "Asia/Shanghai",
+          "serverTime": "2026-09-11T04:00:00.000Z",
+          "canSubmit": true,
+          "submitBlockedReason": null,
+          "reviewVersion": 7
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listSessions": {
+      "method": "GET",
+      "path": "/families/{familyId}/meal-sessions",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "serviceDate": "2026-09-11",
+        "mealType": "LUNCH"
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": [],
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getSession": {
+      "method": "GET",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "id": "meal_1",
+          "serviceDate": "2026-09-11",
+          "mealType": "LUNCH",
+          "timezone": "Asia/Shanghai",
+          "serverTime": "2026-09-11T04:00:00.000Z",
+          "canSubmit": true,
+          "submitBlockedReason": null,
+          "reviewVersion": 7
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getCart": {
+      "method": "GET",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/cart",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "sessionId": "example_aaaaaaaa",
+          "version": 1,
+          "items": []
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "addCartItem": {
+      "method": "PUT",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/cart/items/{variantId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa",
+        "variantId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "sessionId": "example_aaaaaaaa",
+          "version": 1,
+          "items": []
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "removeCartItem": {
+      "method": "DELETE",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/cart/items/{variantId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa",
+        "variantId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "sessionId": "example_aaaaaaaa",
+          "version": 1,
+          "items": []
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "submitMenu": {
+      "method": "POST",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/personal-menu",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 201,
+      "contentType": "application/json",
+      "body": {
+        "variantIds": [
+          "variant_1"
+        ],
+        "note": "少盐"
+      },
+      "response": {
+        "data": {
+          "id": "pm_1",
+          "sessionId": "meal_1",
+          "submittedAt": "2026-09-11T04:00:00.000Z",
+          "note": "少盐",
+          "version": 1,
+          "items": [
+            {
+              "dishId": "dish_1",
+              "variantId": "variant_1",
+              "dishName": "红烧肉",
+              "variantName": "普通版",
+              "portionDescription": "一份约供两人分享",
+              "decision": "UNREVIEWED",
+              "needsReview": true,
+              "plannedQuantity": null,
+              "unit": "PORTION",
+              "reason": ""
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getPersonalMenu": {
+      "method": "GET",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/personal-menu",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": null,
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "appendMenu": {
+      "method": "POST",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/personal-menu/items",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "variantIds": [
+          "example_aaaaaaaa"
+        ],
+        "expectedVersion": 1
+      },
+      "response": {
+        "data": {
+          "id": "example_aaaaaaaa",
+          "sessionId": "example_aaaaaaaa",
+          "submittedAt": "2026-09-11T04:00:00.000Z",
+          "note": "少盐",
+          "version": 1,
+          "items": [
+            {
+              "dishId": "example_aaaaaaaa",
+              "variantId": "example_aaaaaaaa",
+              "dishName": "a",
+              "variantName": "a",
+              "portionDescription": "一份约供两人分享",
+              "decision": "UNREVIEWED",
+              "needsReview": true,
+              "plannedQuantity": 0.1,
+              "unit": "PORTION",
+              "reason": "当天食材不足",
+              "dishDeleted": true,
+              "note": "少盐",
+              "noteUpdatedAt": "2026-09-11T04:00:00.000Z",
+              "noteUpdatedAfterReview": true
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "updateCartItemNote": {
+      "method": "PATCH",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/cart/items/{variantId}/note",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa",
+        "variantId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "note": "少盐",
+        "expectedVersion": 1
+      },
+      "response": {
+        "data": {
+          "sessionId": "example_aaaaaaaa",
+          "version": 1,
+          "items": []
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "updatePersonalItemNote": {
+      "method": "PATCH",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/personal-menu/items/{variantId}/note",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa",
+        "variantId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "note": "少盐",
+        "expectedVersion": 1
+      },
+      "response": {
+        "data": {
+          "id": "example_aaaaaaaa",
+          "sessionId": "example_aaaaaaaa",
+          "submittedAt": "2026-09-11T04:00:00.000Z",
+          "note": "少盐",
+          "version": 1,
+          "items": [
+            {
+              "dishId": "example_aaaaaaaa",
+              "variantId": "example_aaaaaaaa",
+              "dishName": "a",
+              "variantName": "a",
+              "portionDescription": "一份约供两人分享",
+              "decision": "UNREVIEWED",
+              "needsReview": true,
+              "plannedQuantity": 0.1,
+              "unit": "PORTION",
+              "reason": "当天食材不足",
+              "dishDeleted": true,
+              "note": "少盐",
+              "noteUpdatedAt": "2026-09-11T04:00:00.000Z",
+              "noteUpdatedAfterReview": true
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "updateNote": {
+      "method": "PATCH",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/personal-menu/note",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "note": "少盐、不加葱",
+        "expectedVersion": 1
+      },
+      "response": {
+        "data": {
+          "id": "pm_1",
+          "sessionId": "meal_1",
+          "submittedAt": "2026-09-11T04:00:00.000Z",
+          "note": "少盐、不加葱",
+          "version": 2,
+          "items": [
+            {
+              "dishId": "dish_1",
+              "variantId": "variant_1",
+              "dishName": "红烧肉",
+              "variantName": "普通版",
+              "portionDescription": "一份约供两人分享",
+              "decision": "UNREVIEWED",
+              "needsReview": true,
+              "plannedQuantity": null,
+              "unit": "PORTION",
+              "reason": ""
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getFamilyMenu": {
+      "method": "GET",
+      "path": "/families/{familyId}/meal-sessions/{sessionId}/menu",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "session": {
+            "id": "meal_1",
+            "serviceDate": "2026-09-11",
+            "mealType": "LUNCH",
+            "timezone": "Asia/Shanghai",
+            "serverTime": "2026-09-11T04:00:00.000Z",
+            "canSubmit": false,
+            "submitBlockedReason": "ALREADY_SUBMITTED",
+            "reviewVersion": 7
+          },
+          "dishes": [
+            {
+              "dishId": "dish_1",
+              "name": "红烧肉",
+              "kind": "PERMANENT",
+              "uniqueParticipantCount": 4,
+              "variants": [
+                {
+                  "itemId": "item_1",
+                  "variantId": "variant_1",
+                  "name": "普通版",
+                  "portionDescription": "一份约供两人分享",
+                  "participantCount": 3,
+                  "decision": "CONFIRMED",
+                  "needsReview": true,
+                  "plannedQuantity": 1.5,
+                  "unit": "PORTION",
+                  "reason": ""
+                },
+                {
+                  "itemId": "item_2",
+                  "variantId": "variant_2",
+                  "name": "少油版",
+                  "portionDescription": "一份约供两人分享",
+                  "participantCount": 2,
+                  "decision": "UNREVIEWED",
+                  "needsReview": true,
+                  "plannedQuantity": null,
+                  "unit": "PORTION",
+                  "reason": ""
+                }
+              ]
+            }
+          ]
+        },
+        "requestId": "req_example"
+      }
+    },
+    "getReview": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/meal-sessions/{sessionId}/review",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "session": {
+            "id": "meal_1",
+            "serviceDate": "2026-09-11",
+            "mealType": "LUNCH",
+            "timezone": "Asia/Shanghai",
+            "serverTime": "2026-09-11T04:00:00.000Z",
+            "canSubmit": false,
+            "submitBlockedReason": "ALREADY_SUBMITTED",
+            "reviewVersion": 7
+          },
+          "dishes": [
+            {
+              "dishId": "dish_1",
+              "name": "红烧肉",
+              "kind": "PERMANENT",
+              "uniqueParticipantCount": 4,
+              "variants": [
+                {
+                  "itemId": "item_1",
+                  "variantId": "variant_1",
+                  "name": "普通版",
+                  "portionDescription": "一份约供两人分享",
+                  "participantCount": 3,
+                  "decision": "CONFIRMED",
+                  "needsReview": true,
+                  "plannedQuantity": 1.5,
+                  "unit": "PORTION",
+                  "reason": "",
+                  "participants": [
+                    {
+                      "memberId": "m1",
+                      "displayName": "张三",
+                      "note": ""
+                    },
+                    {
+                      "memberId": "m2",
+                      "displayName": "李四",
+                      "note": ""
+                    },
+                    {
+                      "memberId": "m3",
+                      "displayName": "王五",
+                      "note": ""
+                    }
+                  ],
+                  "lastReviewedParticipantCount": 2,
+                  "demandVersion": 3,
+                  "reviewedDemandVersion": 2
+                },
+                {
+                  "itemId": "item_2",
+                  "variantId": "variant_2",
+                  "name": "少油版",
+                  "portionDescription": "一份约供两人分享",
+                  "participantCount": 2,
+                  "decision": "UNREVIEWED",
+                  "needsReview": true,
+                  "plannedQuantity": null,
+                  "unit": "PORTION",
+                  "reason": "",
+                  "participants": [
+                    {
+                      "memberId": "m2",
+                      "displayName": "李四",
+                      "note": ""
+                    },
+                    {
+                      "memberId": "m4",
+                      "displayName": "赵六",
+                      "note": ""
+                    }
+                  ],
+                  "lastReviewedParticipantCount": 0,
+                  "demandVersion": 1,
+                  "reviewedDemandVersion": 0
+                }
+              ]
+            }
+          ],
+          "hasTemporaryAdditions": true
+        },
+        "requestId": "req_example"
+      }
+    },
+    "reviewMenu": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/meal-sessions/{sessionId}/review",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "expectedReviewVersion": 7,
+        "items": [
+          {
+            "itemId": "item_1",
+            "decision": "CONFIRMED",
+            "plannedQuantity": 1.5,
+            "reason": ""
+          },
+          {
+            "itemId": "item_2",
+            "decision": "CONFIRMED",
+            "plannedQuantity": 1,
+            "reason": ""
+          }
+        ]
+      },
+      "response": {
+        "data": {
+          "batchId": "batch_1",
+          "review": {
+            "session": {
+              "id": "meal_1",
+              "serviceDate": "2026-09-11",
+              "mealType": "LUNCH",
+              "timezone": "Asia/Shanghai",
+              "serverTime": "2026-09-11T04:00:00.000Z",
+              "canSubmit": false,
+              "submitBlockedReason": "ALREADY_SUBMITTED",
+              "reviewVersion": 8
+            },
+            "dishes": [
+              {
+                "dishId": "dish_1",
+                "name": "红烧肉",
+                "kind": "PERMANENT",
+                "uniqueParticipantCount": 4,
+                "variants": [
+                  {
+                    "itemId": "item_1",
+                    "variantId": "variant_1",
+                    "name": "普通版",
+                    "portionDescription": "一份约供两人分享",
+                    "participantCount": 3,
+                    "decision": "CONFIRMED",
+                    "needsReview": false,
+                    "plannedQuantity": 1.5,
+                    "unit": "PORTION",
+                    "reason": "",
+                    "participants": [
+                      {
+                        "memberId": "m1",
+                        "displayName": "张三",
+                        "note": ""
+                      },
+                      {
+                        "memberId": "m2",
+                        "displayName": "李四",
+                        "note": ""
+                      },
+                      {
+                        "memberId": "m3",
+                        "displayName": "王五",
+                        "note": ""
+                      }
+                    ],
+                    "lastReviewedParticipantCount": 3,
+                    "demandVersion": 3,
+                    "reviewedDemandVersion": 3
+                  },
+                  {
+                    "itemId": "item_2",
+                    "variantId": "variant_2",
+                    "name": "少油版",
+                    "portionDescription": "一份约供两人分享",
+                    "participantCount": 2,
+                    "decision": "CONFIRMED",
+                    "needsReview": false,
+                    "plannedQuantity": 1,
+                    "unit": "PORTION",
+                    "reason": "",
+                    "participants": [
+                      {
+                        "memberId": "m2",
+                        "displayName": "李四",
+                        "note": ""
+                      },
+                      {
+                        "memberId": "m4",
+                        "displayName": "赵六",
+                        "note": ""
+                      }
+                    ],
+                    "lastReviewedParticipantCount": 2,
+                    "demandVersion": 1,
+                    "reviewedDemandVersion": 1
+                  }
+                ]
+              }
+            ],
+            "hasTemporaryAdditions": false
+          },
+          "notificationRecordCount": 4
+        },
+        "requestId": "req_review"
+      }
+    },
+    "createTemporaryDish": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/meal-sessions/{sessionId}/temporary-dishes",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "sessionId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 201,
+      "contentType": "application/json",
+      "body": {
+        "name": "红烧肉",
+        "description": "示例说明",
+        "imageFileId": null,
+        "isAvailable": true,
+        "variants": [
+          {
+            "name": "普通版",
+            "portionDescription": "一份约供两人分享",
+            "description": "家常口味",
+            "isAvailable": true
+          }
+        ]
+      },
+      "response": {
+        "data": {
+          "id": "dish_1",
+          "name": "红烧肉",
+          "description": "家常菜",
+          "image": null,
+          "isAvailable": true,
+          "kind": "TEMPORARY",
+          "originSessionId": "meal_1",
+          "version": 1,
+          "deletedAt": null,
+          "variants": [
+            {
+              "id": "variant_1",
+              "name": "普通版",
+              "portionDescription": "一份约供两人分享",
+              "description": "家常口味",
+              "isAvailable": true,
+              "version": 1,
+              "deletedAt": null
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "promoteDish": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/dishes/{dishId}/promote",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "dishId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "expectedVersion": 1
+      },
+      "response": {
+        "data": {
+          "id": "dish_1",
+          "name": "红烧肉",
+          "description": "家常菜",
+          "image": null,
+          "isAvailable": true,
+          "kind": "PERMANENT",
+          "originSessionId": "meal_1",
+          "version": 2,
+          "deletedAt": null,
+          "variants": [
+            {
+              "id": "variant_1",
+              "name": "普通版",
+              "portionDescription": "一份约供两人分享",
+              "description": "家常口味",
+              "isAvailable": true,
+              "version": 1,
+              "deletedAt": null
+            }
+          ]
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "createFileUpload": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/files/uploads",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "sizeBytes": 1
+      },
+      "response": {
+        "data": {
+          "url": "https://example.invalid/signed-image",
+          "formData": {
+            "key": "a",
+            "q-sign-algorithm": "a",
+            "q-ak": "a",
+            "q-key-time": "a",
+            "success_action_status": "a",
+            "acl": "a",
+            "policy": "a",
+            "q-signature": "a",
+            "x-cos-security-token": "a"
+          },
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "ticket": "a"
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "completeFileUpload": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/files/uploads/complete",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 201,
+      "contentType": "application/json",
+      "body": {
+        "ticket": "a"
+      },
+      "response": {
+        "data": {
+          "fileId": "example_aaaaaaaa",
+          "url": "https://example.invalid/signed-image",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "mimeType": "image/jpeg",
+          "sizeBytes": 1
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "uploadFile": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/files",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 201,
+      "contentType": "multipart/form-data",
+      "body": {
+        "file": "<binary image bytes: multipart file>"
+      },
+      "response": {
+        "data": {
+          "fileId": "example_aaaaaaaa",
+          "url": "https://example.invalid/signed-image",
+          "expiresAt": "2026-09-11T04:15:00.000Z",
+          "mimeType": "image/jpeg",
+          "sizeBytes": 1024
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getFile": {
+      "method": "GET",
+      "path": "/families/{familyId}/files/{fileId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "fileId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "fileId": "example_aaaaaaaa",
+          "url": "https://example.invalid/signed-image",
+          "expiresAt": "2026-09-11T04:15:00.000Z",
+          "mimeType": "image/jpeg",
+          "sizeBytes": 1024
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listFileCleanupCandidates": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/files/cleanup-candidates",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "page": 1,
+        "pageSize": 1
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "items": [],
+          "page": 1,
+          "pageSize": 1,
+          "total": 0
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getFileCleanupTask": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/file-cleanup-tasks/{taskId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "taskId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "taskId": "example_aaaaaaaa",
+          "fileId": "example_aaaaaaaa",
+          "status": "PENDING",
+          "attemptCount": 0,
+          "lastErrorCode": "a",
+          "createdAt": "2026-09-11T04:00:00.000Z",
+          "updatedAt": "2026-09-11T04:00:00.000Z"
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "requestFileCleanup": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/files/{fileId}/cleanup",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "fileId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 202,
+      "response": {
+        "data": {
+          "taskId": "example_aaaaaaaa"
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "createInvite": {
+      "method": "POST",
+      "path": "/families/{familyId}/admin/invites",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 201,
+      "contentType": "application/json",
+      "body": {
+        "role": "MEMBER"
+      },
+      "response": {
+        "data": {
+          "id": "example_aaaaaaaa",
+          "role": "MEMBER",
+          "createdAt": "2026-09-11T04:00:00.000Z",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "status": "ACTIVE",
+          "redemptionCount": 0,
+          "code": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listInvites": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/invites",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "page": 1,
+        "pageSize": 1
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "items": [],
+          "page": 1,
+          "pageSize": 1,
+          "total": 0
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "revokeInvite": {
+      "method": "DELETE",
+      "path": "/families/{familyId}/admin/invites/{inviteId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "inviteId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "ok": true
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "redeemInvite": {
+      "method": "POST",
+      "path": "/invites/redeem",
+      "pathParams": {},
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "code": "REPLACE_GUEST_CODE"
+      },
+      "response": {
+        "data": {
+          "family": {
+            "id": "example_aaaaaaaa",
+            "name": "红烧肉",
+            "memberId": "example_aaaaaaaa",
+            "role": "ADMIN",
+            "accessExpiresAt": "2026-09-11T04:00:00.000Z"
+          },
+          "alreadyJoined": true
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listFamilyMembers": {
+      "method": "GET",
+      "path": "/families/{familyId}/members",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "page": 1,
+        "pageSize": 1
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "items": [],
+          "page": 1,
+          "pageSize": 1,
+          "total": 0
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listMembers": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/members",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "page": 1,
+        "pageSize": 1,
+        "status": "ACTIVE"
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "items": [],
+          "page": 1,
+          "pageSize": 1,
+          "total": 0
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "updateMemberRole": {
+      "method": "PATCH",
+      "path": "/families/{familyId}/admin/members/{memberId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "memberId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "role": "ADMIN"
+      },
+      "response": {
+        "data": {
+          "id": "example_aaaaaaaa",
+          "displayName": "张三",
+          "role": "ADMIN",
+          "status": "ACTIVE",
+          "joinedAt": "2026-09-11T04:00:00.000Z",
+          "avatar": {
+            "fileId": "example_aaaaaaaa",
+            "url": "https://example.invalid/signed-image",
+            "expiresAt": "2026-09-11T04:00:00.000Z"
+          },
+          "accessExpiresAt": "2026-09-11T04:00:00.000Z"
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "removeMember": {
+      "method": "DELETE",
+      "path": "/families/{familyId}/admin/members/{memberId}",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa",
+        "memberId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "ok": true
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "leaveFamily": {
+      "method": "DELETE",
+      "path": "/families/{familyId}/members/me",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "ok": true
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "getNotificationConfig": {
+      "method": "GET",
+      "path": "/families/{familyId}/notification-config",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "enabled": false,
+          "templateId": null
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "recordSubscriptionResult": {
+      "method": "POST",
+      "path": "/families/{familyId}/subscription-results",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {},
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>",
+        "Idempotency-Key": "example_aaaaaaaa"
+      },
+      "successStatus": 200,
+      "contentType": "application/json",
+      "body": {
+        "templateId": "example_aaaaaaaa",
+        "result": "ACCEPT"
+      },
+      "response": {
+        "data": {
+          "ok": true
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listMyNotifications": {
+      "method": "GET",
+      "path": "/families/{familyId}/notifications",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "page": 1,
+        "pageSize": 1
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "items": [],
+          "page": 1,
+          "pageSize": 1,
+          "total": 0
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    },
+    "listOperations": {
+      "method": "GET",
+      "path": "/families/{familyId}/admin/operations",
+      "pathParams": {
+        "familyId": "example_aaaaaaaa"
+      },
+      "query": {
+        "page": 1,
+        "pageSize": 1,
+        "sessionId": "example_aaaaaaaa"
+      },
+      "headers": {
+        "Authorization": "Bearer <real-token-at-runtime>"
+      },
+      "successStatus": 200,
+      "response": {
+        "data": {
+          "items": [],
+          "page": 1,
+          "pageSize": 1,
+          "total": 0
+        },
+        "requestId": "example_aaaaaaaa"
+      }
+    }
+  }
+}

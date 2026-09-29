@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "掌勺人审核工作台",
+  "usingComponents": {
+    "review-card": "../../components/review-card/index"
+  },
+  "enablePullDownRefresh": true
+}

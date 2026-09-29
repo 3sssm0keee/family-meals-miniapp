@@ -1,0 +1,17 @@
+<view class="delete-backdrop" wx:if="{{preview}}" catchtap="onCancel">
+  <view class="delete-card" catchtap="onPreventClose">
+    <view class="delete-title">删除菜谱中的这道菜？</view>
+    <view class="delete-name">{{preview.name}}</view>
+    <view class="delete-detail">将物理删除这道菜及 {{preview.variantCount}} 个规格。</view>
+    <view wx:if="{{preview.cartItemCount}}" class="delete-detail">将清除 {{preview.cartItemCount}} 个未提交购物车项。</view>
+    <view wx:if="{{preview.submittedItemCount || preview.menuItemCount}}" class="delete-detail">{{preview.submittedItemCount}} 条已提交点单、{{preview.menuItemCount}} 条家庭菜单保留历史快照。</view>
+    <view wx:if="{{preview.pendingReviewItemCount || preview.confirmedItemCount}}" class="delete-detail">其中待审核 {{preview.pendingReviewItemCount}} 条、已确认 {{preview.confirmedItemCount}} 条仍可按历史记录处理。</view>
+    <view wx:if="{{preview.hasImage}}" class="delete-detail">菜品图片不会随本次删除自动清理。</view>
+    <view wx:if="{{error}}" class="delete-error">{{error}}</view>
+    <button wx:if="{{blocked}}" catchtap="onReconcile" disabled="{{deleting}}">核对删除结果</button>
+    <view class="delete-actions">
+      <button class="delete-cancel" catchtap="onCancel" disabled="{{deleting}}">❌ 取消</button>
+      <button class="delete-confirm" catchtap="onConfirm" loading="{{deleting}}" disabled="{{deleting || blocked}}">✅ 确认删除</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,480 @@
+generator client {
+  provider = "prisma-client"
+  output = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum MemberRole {
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+enum MemberStatus {
+  ACTIVE
+  LEFT
+  REMOVED
+}
+
+enum MealType {
+  LUNCH
+  DINNER
+}
+
+enum DishKind {
+  PERMANENT
+  TEMPORARY
+}
+
+enum Decision {
+  UNREVIEWED
+  CONFIRMED
+  CANCELLED
+}
+
+enum InviteRole {
+  MEMBER
+  GUEST
+}
+
+enum SubscriptionResult {
+  ACCEPT
+  REJECT
+  BAN
+}
+
+enum NotificationChannel {
+  WECHAT_SUBSCRIBE
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  SKIPPED
+  UNKNOWN
+}
+
+enum IdempotencyStatus {
+  PROCESSING
+  COMPLETED
+}
+
+enum FileCleanupStatus {
+  PENDING
+  DELETING
+  OBJECT_DELETED
+  FAILED
+  SKIPPED
+  COMPLETED
+}
+
+model User {
+  id String @id @default(uuid()) @db.VarChar(64)
+  wechatAppId String @db.VarChar(64) @map("wechat_app_id")
+  openid String @db.VarChar(128)
+  avatarKey String? @db.VarChar(64) @map("avatar_key")
+  displayName String @db.VarChar(40) @map("display_name")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  familyMember_user FamilyMember[] @relation("FamilyMember_user")
+  idempotencyRecord_user IdempotencyRecord[] @relation("IdempotencyRecord_user")
+  inviteRedemption_user InviteRedemption[] @relation("InviteRedemption_user")
+  @@unique([wechatAppId, openid])
+  @@map("users")
+}
+
+model Family {
+  id String @id @default(uuid()) @db.VarChar(64)
+  name String @db.VarChar(60)
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  familyMember_family FamilyMember[] @relation("FamilyMember_family")
+  mealSession_family MealSession[] @relation("MealSession_family")
+  fileAsset_family FileAsset[] @relation("FileAsset_family")
+  dish_family Dish[] @relation("Dish_family")
+  dishVariant_family DishVariant[] @relation("DishVariant_family")
+  cart_family Cart[] @relation("Cart_family")
+  cartItem_family CartItem[] @relation("CartItem_family")
+  personalMenu_family PersonalMenu[] @relation("PersonalMenu_family")
+  personalMenuItem_family PersonalMenuItem[] @relation("PersonalMenuItem_family")
+  familyMenuItem_family FamilyMenuItem[] @relation("FamilyMenuItem_family")
+  reviewBatch_family ReviewBatch[] @relation("ReviewBatch_family")
+  menuOperation_family MenuOperation[] @relation("MenuOperation_family")
+  invite_family Invite[] @relation("Invite_family")
+  inviteRedemption_family InviteRedemption[] @relation("InviteRedemption_family")
+  subscriptionEvent_family SubscriptionEvent[] @relation("SubscriptionEvent_family")
+  notification_family Notification[] @relation("Notification_family")
+  idempotencyRecord_family IdempotencyRecord[] @relation("IdempotencyRecord_family")
+  fileCleanupTask_family FileCleanupTask[] @relation("FileCleanupTask_family")
+  @@map("family")
+}
+
+model FamilyMember {
+  accessExpiresAt DateTime? @db.DateTime(3) @map("access_expires_at")
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  userId String @db.VarChar(64) @map("user_id")
+  role MemberRole
+  status MemberStatus @default(ACTIVE)
+  joinedAt DateTime @db.DateTime(3) @map("joined_at")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("FamilyMember_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  user User @relation("FamilyMember_user", fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  fileAsset_uploaderMember FileAsset[] @relation("FileAsset_uploaderMember")
+  cart_member Cart[] @relation("Cart_member")
+  personalMenu_member PersonalMenu[] @relation("PersonalMenu_member")
+  reviewBatch_actorMember ReviewBatch[] @relation("ReviewBatch_actorMember")
+  menuOperation_actorMember MenuOperation[] @relation("MenuOperation_actorMember")
+  invite_creatorMember Invite[] @relation("Invite_creatorMember")
+  inviteRedemption_member InviteRedemption[] @relation("InviteRedemption_member")
+  subscriptionEvent_member SubscriptionEvent[] @relation("SubscriptionEvent_member")
+  notification_member Notification[] @relation("Notification_member")
+  @@unique([familyId, userId])
+  @@unique([familyId, id])
+  @@index([familyId, status, role])
+  @@map("family_member")
+}
+
+model MealSession {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  serviceDate DateTime @db.Date @map("service_date")
+  mealType MealType @map("meal_type")
+  reviewVersion Int @default(1) @map("review_version")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("MealSession_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  dish_originSession Dish[] @relation("Dish_originSession")
+  cart_session Cart[] @relation("Cart_session")
+  personalMenu_session PersonalMenu[] @relation("PersonalMenu_session")
+  familyMenuItem_session FamilyMenuItem[] @relation("FamilyMenuItem_session")
+  reviewBatch_session ReviewBatch[] @relation("ReviewBatch_session")
+  menuOperation_session MenuOperation[] @relation("MenuOperation_session")
+  @@unique([familyId, id])
+  @@unique([familyId, serviceDate, mealType])
+  @@map("meal_session")
+}
+
+model FileAsset {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  uploaderMemberId String @db.VarChar(64) @map("uploader_member_id")
+  storageKey String @db.VarChar(512) @map("storage_key")
+  mimeType String @db.VarChar(40) @map("mime_type")
+  sizeBytes Int @map("size_bytes")
+  sha256 String @db.Char(64)
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("FileAsset_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  uploaderMember FamilyMember @relation("FileAsset_uploaderMember", fields: [familyId, uploaderMemberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  dish_imageFile Dish[] @relation("Dish_imageFile")
+  @@unique([familyId, id])
+  @@index([familyId, createdAt])
+  @@map("file_asset")
+}
+
+model FileCleanupTask {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  fileId String @db.VarChar(64) @map("file_id")
+  storageKey String @db.VarChar(512) @map("storage_key")
+  requestedByMemberId String @db.VarChar(64) @map("requested_by_member_id")
+  requestedByName String @db.VarChar(40) @map("requested_by_name")
+  status FileCleanupStatus @default(PENDING)
+  attemptCount Int @default(0) @map("attempt_count")
+  leaseUntil DateTime? @db.DateTime(3) @map("lease_until")
+  lastErrorCode String? @db.VarChar(40) @map("last_error_code")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("FileCleanupTask_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([familyId, fileId])
+  @@index([status, leaseUntil])
+  @@map("file_cleanup_task")
+}
+
+model Dish {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  name String @db.VarChar(60)
+  normalizedName String @db.VarChar(60) @map("normalized_name")
+  description String @default(dbgenerated("(_utf8mb4\\'\\')")) @db.Text
+  imageFileId String? @db.VarChar(64) @map("image_file_id")
+  isAvailable Boolean @map("is_available")
+  kind DishKind
+  originSessionId String? @db.VarChar(64) @map("origin_session_id")
+  version Int @default(1)
+  deletedAt DateTime? @db.DateTime(3) @map("deleted_at")
+  activeNameKey String? @db.VarChar(160) @map("active_name_key")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("Dish_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  imageFile FileAsset? @relation("Dish_imageFile", fields: [familyId, imageFileId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  originSession MealSession? @relation("Dish_originSession", fields: [familyId, originSessionId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  dishVariant_dish DishVariant[] @relation("DishVariant_dish")
+  @@unique([familyId, id])
+  @@unique([familyId, activeNameKey])
+  @@index([familyId, kind, deletedAt, createdAt])
+  @@map("dish")
+}
+
+model DishVariant {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  dishId String @db.VarChar(64) @map("dish_id")
+  name String @db.VarChar(40)
+  normalizedName String @db.VarChar(40) @map("normalized_name")
+  portionDescription String @db.VarChar(200) @map("portion_description")
+  description String @default("") @db.VarChar(500)
+  isAvailable Boolean @map("is_available")
+  version Int @default(1)
+  deletedAt DateTime? @db.DateTime(3) @map("deleted_at")
+  activeNameKey String? @db.VarChar(40) @map("active_name_key")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("DishVariant_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  dish Dish @relation("DishVariant_dish", fields: [familyId, dishId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  cartItem_variant CartItem[] @relation("CartItem_variant")
+  @@unique([familyId, id])
+  @@unique([dishId, activeNameKey])
+  @@map("dish_variant")
+}
+
+model Cart {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  sessionId String @db.VarChar(64) @map("session_id")
+  memberId String @db.VarChar(64) @map("member_id")
+  version Int @default(1)
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("Cart_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  session MealSession @relation("Cart_session", fields: [familyId, sessionId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  member FamilyMember @relation("Cart_member", fields: [familyId, memberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  cartItem_cart CartItem[] @relation("CartItem_cart")
+  @@unique([familyId, id])
+  @@unique([sessionId, memberId])
+  @@map("cart")
+}
+
+model CartItem {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  cartId String @db.VarChar(64) @map("cart_id")
+  variantId String @db.VarChar(64) @map("variant_id")
+  note String @default("") @db.VarChar(500)
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("CartItem_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  cart Cart @relation("CartItem_cart", fields: [familyId, cartId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  variant DishVariant @relation("CartItem_variant", fields: [familyId, variantId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([cartId, variantId])
+  @@map("cart_item")
+}
+
+model PersonalMenu {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  sessionId String @db.VarChar(64) @map("session_id")
+  memberId String @db.VarChar(64) @map("member_id")
+  note String @default("") @db.VarChar(500)
+  version Int @default(1)
+  submittedAt DateTime @db.DateTime(3) @map("submitted_at")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("PersonalMenu_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  session MealSession @relation("PersonalMenu_session", fields: [familyId, sessionId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  member FamilyMember @relation("PersonalMenu_member", fields: [familyId, memberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  personalMenuItem_personalMenu PersonalMenuItem[] @relation("PersonalMenuItem_personalMenu")
+  @@unique([familyId, id])
+  @@unique([sessionId, memberId])
+  @@map("personal_menu")
+}
+
+model PersonalMenuItem {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  personalMenuId String @db.VarChar(64) @map("personal_menu_id")
+  familyMenuItemId String @db.VarChar(64) @map("family_menu_item_id")
+  variantId String @db.VarChar(64) @map("variant_id")
+  dishName String @db.VarChar(60) @map("dish_name")
+  variantName String @db.VarChar(40) @map("variant_name")
+  portionDescription String @db.VarChar(200) @map("portion_description")
+  note String @default("") @db.VarChar(500)
+  noteUpdatedAt DateTime? @db.DateTime(3) @map("note_updated_at")
+  noteUpdatedAfterReview Boolean @default(false) @map("note_updated_after_review")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("PersonalMenuItem_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  personalMenu PersonalMenu @relation("PersonalMenuItem_personalMenu", fields: [familyId, personalMenuId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  familyMenuItem FamilyMenuItem @relation("PersonalMenuItem_familyMenuItem", fields: [familyId, familyMenuItemId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([personalMenuId, variantId])
+  @@index([familyMenuItemId])
+  @@index([familyId, variantId])
+  @@map("personal_menu_item")
+}
+
+model FamilyMenuItem {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  sessionId String @db.VarChar(64) @map("session_id")
+  dishId String @db.VarChar(64) @map("dish_id")
+  variantId String @db.VarChar(64) @map("variant_id")
+  dishName String @db.VarChar(60) @map("dish_name")
+  variantName String @db.VarChar(40) @map("variant_name")
+  portionDescription String @db.VarChar(200) @map("portion_description")
+  dishKind DishKind @map("dish_kind")
+  decision Decision @default(UNREVIEWED)
+  plannedQuantity Decimal? @db.Decimal(4, 1) @map("planned_quantity")
+  reason String @default("") @db.VarChar(200)
+  demandVersion Int @default(1) @map("demand_version")
+  reviewedDemandVersion Int @default(0) @map("reviewed_demand_version")
+  lastReviewedParticipantCount Int @default(0) @map("last_reviewed_participant_count")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("FamilyMenuItem_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  personalMenuItem_familyMenuItem PersonalMenuItem[] @relation("PersonalMenuItem_familyMenuItem")
+  session MealSession @relation("FamilyMenuItem_session", fields: [familyId, sessionId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([familyId, id])
+  @@unique([sessionId, variantId])
+  @@index([familyId, dishId])
+  @@index([familyId, variantId])
+  @@map("family_menu_item")
+}
+
+model ReviewBatch {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  sessionId String @db.VarChar(64) @map("session_id")
+  actorMemberId String @db.VarChar(64) @map("actor_member_id")
+  fromVersion Int @map("from_version")
+  toVersion Int @map("to_version")
+  snapshot Json
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("ReviewBatch_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  session MealSession @relation("ReviewBatch_session", fields: [familyId, sessionId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  actorMember FamilyMember @relation("ReviewBatch_actorMember", fields: [familyId, actorMemberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  notification_batch Notification[] @relation("Notification_batch")
+  @@unique([familyId, id])
+  @@unique([sessionId, toVersion])
+  @@map("review_batch")
+}
+
+model MenuOperation {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  sessionId String? @db.VarChar(64) @map("session_id")
+  actorMemberId String @db.VarChar(64) @map("actor_member_id")
+  actorName String @db.VarChar(40) @map("actor_name")
+  action String @db.VarChar(40)
+  resourceId String @db.VarChar(64) @map("resource_id")
+  reason String @default("") @db.VarChar(200)
+  summary String @default("") @db.VarChar(500)
+  beforeValue Json? @map("before_value")
+  afterValue Json? @map("after_value")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("MenuOperation_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  session MealSession? @relation("MenuOperation_session", fields: [familyId, sessionId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  actorMember FamilyMember @relation("MenuOperation_actorMember", fields: [familyId, actorMemberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  @@index([familyId, createdAt, id])
+  @@index([sessionId, createdAt])
+  @@map("menu_operation")
+}
+
+model Invite {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  creatorMemberId String @db.VarChar(64) @map("creator_member_id")
+  codeHash String @unique @db.Char(64) @map("code_hash")
+  role InviteRole
+  expiresAt DateTime @db.DateTime(3) @map("expires_at")
+  revokedAt DateTime? @db.DateTime(3) @map("revoked_at")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("Invite_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  creatorMember FamilyMember @relation("Invite_creatorMember", fields: [familyId, creatorMemberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  inviteRedemption_invite InviteRedemption[] @relation("InviteRedemption_invite")
+  @@unique([familyId, id])
+  @@index([familyId, createdAt])
+  @@map("invite")
+}
+
+model InviteRedemption {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  inviteId String @db.VarChar(64) @map("invite_id")
+  userId String @db.VarChar(64) @map("user_id")
+  memberId String @db.VarChar(64) @map("member_id")
+  redeemedAt DateTime @db.DateTime(3) @map("redeemed_at")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("InviteRedemption_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  user User @relation("InviteRedemption_user", fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  invite Invite @relation("InviteRedemption_invite", fields: [familyId, inviteId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  member FamilyMember @relation("InviteRedemption_member", fields: [familyId, memberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([inviteId, userId])
+  @@map("invite_redemption")
+}
+
+model SubscriptionEvent {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  memberId String @db.VarChar(64) @map("member_id")
+  templateId String @db.VarChar(200) @map("template_id")
+  result SubscriptionResult
+  recordedAt DateTime @db.DateTime(3) @map("recorded_at")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("SubscriptionEvent_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  member FamilyMember @relation("SubscriptionEvent_member", fields: [familyId, memberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  @@index([familyId, memberId, recordedAt])
+  @@map("subscription_event")
+}
+
+model Notification {
+  id String @id @default(uuid()) @db.VarChar(64)
+  familyId String @db.VarChar(64) @map("family_id")
+  batchId String @db.VarChar(64) @map("batch_id")
+  memberId String @db.VarChar(64) @map("member_id")
+  channel NotificationChannel
+  status NotificationStatus
+  reasonCode String? @db.VarChar(40) @map("reason_code")
+  attemptCount Int @default(0) @map("attempt_count")
+  nextAttemptAt DateTime? @db.DateTime(3) @map("next_attempt_at")
+  sentAt DateTime? @db.DateTime(3) @map("sent_at")
+  providerMessageId String? @db.VarChar(200) @map("provider_message_id")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family @relation("Notification_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  batch ReviewBatch @relation("Notification_batch", fields: [familyId, batchId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  member FamilyMember @relation("Notification_member", fields: [familyId, memberId], references: [familyId, id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([batchId, memberId, channel])
+  @@index([status, nextAttemptAt])
+  @@map("notification")
+}
+
+model IdempotencyRecord {
+  id String @id @default(uuid()) @db.VarChar(64)
+  userId String @db.VarChar(64) @map("user_id")
+  familyId String? @db.VarChar(64) @map("family_id")
+  scopeHash String @db.Char(64) @map("scope_hash")
+  key String @db.VarChar(128)
+  requestHash String @db.Char(64) @map("request_hash")
+  status IdempotencyStatus
+  httpStatus Int? @map("http_status")
+  responseCiphertext Bytes? @db.MediumBlob @map("response_ciphertext")
+  expiresAt DateTime @db.DateTime(3) @map("expires_at")
+  createdAt DateTime @default(now()) @db.DateTime(3) @map("created_at")
+  updatedAt DateTime @updatedAt @db.DateTime(3) @map("updated_at")
+  family Family? @relation("IdempotencyRecord_family", fields: [familyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  user User @relation("IdempotencyRecord_user", fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([userId, scopeHash, key])
+  @@index([expiresAt])
+  @@map("idempotency_record")
+}

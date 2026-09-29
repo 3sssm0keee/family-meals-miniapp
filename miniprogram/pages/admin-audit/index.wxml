@@ -1,0 +1,26 @@
+<view wx:if="{{adminAccessState === 'checking'}}" class="admin-access-state">正在核验掌勺人权限…</view>
+<view wx:if="{{adminAccessState === 'error'}}" class="admin-access-state">权限核验失败，请重试<button bindtap="refreshAdminAccess">重试核验</button></view>
+<block wx:if="{{adminAccessState === 'ready'}}">
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="aa-page safe-bottom">
+  <view class="header-card mori-card">
+    <view class="title">家庭业务审计</view>
+    <view class="sub-title">查看谁在何时修改了菜品、成员和餐次</view>
+  </view>
+  <view wx:if="{{loading}}" class="member-state">正在加载审计记录…</view>
+  <view wx:if="{{error}}" class="member-state">{{error}}<button bindtap="loadAudit">重新加载</button></view>
+  <view class="audit-list">
+    <block wx:for="{{operations}}" wx:key="id">
+      <view class="a-card mori-card">
+        <view class="flex-between">
+          <text class="a-actor">{{item.actorName}}</text>
+          <text class="mori-badge badge-primary">{{item.categoryText}}</text>
+        </view>
+        <view class="a-summary">{{item.summaryText}}</view>
+        <view class="a-time">{{item.createdAtText}}</view>
+      </view>
+    </block>
+    <view wx:if="{{!loading && !error && !operations.length}}" class="member-state">暂无审计记录</view>
+  </view>
+</view>
+</block>

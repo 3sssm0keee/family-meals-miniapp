@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "scope": "Offline checks for the JSON Schema subset used here; not full OpenAPI certification or runtime tests.",
+  "operations": 54,
+  "schemas": 57,
+  "positiveParameterBodyResponseChecks": 220,
+  "negativeSchemaChecks": 10,
+  "referenceAndPathChecks": "PASS",
+  "reviewExampleDeduplicatedCounts": [
+    3,
+    2,
+    4
+  ],
+  "publicViewPrivacyCheck": "PASS",
+  "sha256": {
+    "openapi-v1.json": "d7ad526ce86e299966e3375e560ed96304537570cf9684a7cd00b0d2c8b39836",
+    "frontend-types.ts": "2816f1db03d476f72223a67040079d20d9aa97d8c565fd859d4086f2ac092a07",
+    "examples-v1.json": "aa904c1c25da52fd96455466685f6b3d802ba2c56b4f321f7936f4e331484de6"
+  },
+  "notRun": [
+    "Full third-party OpenAPI validator (outside this checker)",
+    "TypeScript compilation (see integration acceptance report)",
+    "Backend/database integration (see integration acceptance report)",
+    "WeChat rendering and real notification delivery (outside this checker)"
+  ]
+}

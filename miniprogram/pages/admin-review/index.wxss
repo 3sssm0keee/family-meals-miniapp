@@ -1,0 +1,70 @@
+.ar-page {
+  padding: 24rpx;
+  min-height: 100vh;
+  padding-bottom: 160rpx;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2C332D;
+}
+.version-tip {
+  font-size: 22rpx;
+  color: #747D75;
+  margin-top: 6rpx;
+}
+.header-btns {
+  display: flex;
+  gap: 12rpx;
+}
+.mini-btn-accent {
+  background: #E0A96D;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 10rpx 20rpx;
+  border-radius: 14rpx;
+  line-height: 1.4;
+  margin: 0;
+}
+.dirty-warning {
+  margin-top: 14rpx;
+  font-size: 22rpx;
+  color: #D48B38;
+  background: #FAF3EC;
+  padding: 10rpx 16rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid #F0D9C0;
+}
+.conflict-alert {
+  margin-top: 14rpx;
+  font-size: 22rpx;
+  color: #D9534F;
+  background: #FDF2F2;
+  padding: 12rpx 16rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid #F5C6CB;
+  font-weight: 600;
+}
+.review-cards-list {
+  margin-top: 10rpx;
+}
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+.w-full {
+  width: 100% !important;
+}
+.addition-notice { text-align: center; color: #d66a42; font-size: 26rpx; font-weight: 700; margin-bottom: 12rpx; }

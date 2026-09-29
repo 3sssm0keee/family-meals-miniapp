@@ -1,0 +1,96 @@
+<view class="review-card mori-card">
+  <!-- 菜品总览：名称、类型与去重人数 -->
+  <view class="review-header">
+    <view class="title-row">
+      <text class="dish-title">{{dish.name}}</text>
+      <text wx:if="{{dish.dishDeleted}}" class="mori-badge badge-danger">已删除</text>
+      <text wx:if="{{dish.kind === 'TEMPORARY'}}" class="mori-badge badge-accent">当餐临时菜</text>
+    </view>
+    <view class="mori-badge badge-primary total-count">
+      共 {{dish.uniqueParticipantCount}} 人想吃
+    </view>
+  </view>
+
+  <!-- 各版本审核列表 -->
+  <view class="variant-review-list">
+    <block wx:for="{{dish.variants}}" wx:key="itemId">
+      <view class="variant-review-block">
+        <!-- 规格名与状态标 -->
+        <view class="variant-title-line">
+          <view class="variant-name-box">
+            <text class="v-name">{{item.name}}</text>
+            <text class="v-count">({{item.participantCount}} 人)</text>
+          </view>
+
+          <!-- 状态徽章区：严苛规则（已确认且需复审时，必须同时展示两种标记） -->
+          <view class="status-tags">
+            <block wx:if="{{item.decision === 'CONFIRMED'}}">
+              <text class="mori-badge badge-primary">已确认 {{item.plannedQuantity}}份</text>
+
+            </block>
+            <block wx:elif="{{item.decision === 'CANCELLED'}}">
+              <text class="mori-badge badge-danger">已取消</text>
+            </block>
+            <block wx:else>
+              <text class="mori-badge badge-neutral">未审核</text>
+            </block>
+            <text wx:if="{{item.needsReview && item.decision !== 'UNREVIEWED'}}" class="mori-badge badge-accent">需求已更新，待复核</text>
+          </view>
+        </view>
+
+        <!-- 参与成员列表与折叠/展开个人备注 -->
+        <view class="participants-box">
+          <view class="participants-title">点餐名单与个人需求：</view>
+          <view class="participant-chips">
+            <block wx:for="{{item.participants}}" wx:for-item="p" wx:key="memberId">
+              <view class="p-chip">
+                <text class="p-name">{{p.displayName}}</text>
+                <text wx:if="{{p.note}}" class="p-note">本次备注：{{p.note}}</text>
+                <text wx:if="{{p.noteUpdatedAfterReview}}" class="mori-badge badge-accent">备注已更新，请注意{{!p.note ? '（已清空）' : ''}}</text>
+                <text wx:if="{{p.noteUpdatedAfterReview}}" class="p-note">更新时间：{{p.noteUpdatedAt}}</text>
+                <text wx:if="{{p.legacyNote}}" class="p-note">历史整单备注：{{p.legacyNote}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+
+        <!-- 取消原因展示（若已取消） -->
+        <view wx:if="{{item.decision === 'CANCELLED' && item.reason}}" class="cancel-reason-line">
+          取消原因：{{item.reason}}
+        </view>
+
+        <!-- 管理员操作区：制作份数输入与决议按键 -->
+        <view class="action-row">
+          <view class="quantity-input-box">
+            <text class="q-label">计划制作:</text>
+            <input 
+              class="q-input" 
+              type="digit" 
+              placeholder="份数" 
+              value="{{quantityDrafts[item.itemId] !== undefined ? quantityDrafts[item.itemId] : (item.plannedQuantity !== null ? item.plannedQuantity : '')}}"
+              bindinput="onQuantityInput"
+              data-item-id="{{item.itemId}}" />
+            <text class="q-unit">份</text>
+          </view>
+
+          <view class="btn-group">
+            <button 
+              class="mini-btn btn-confirm" 
+              bindtap="onConfirm" 
+              data-item-id="{{item.itemId}}">
+              <block wx:if="{{item.decision === 'CONFIRMED'}}"><text>重新</text><text>确认</text></block>
+              <text wx:else>确认</text>
+            </button>
+            <button 
+              class="mini-btn btn-cancel" 
+              bindtap="onCancel" 
+              data-item-id="{{item.itemId}}">
+              取消
+            </button>
+          </view>
+        </view>
+
+      </view>
+    </block>
+  </view>
+</view>

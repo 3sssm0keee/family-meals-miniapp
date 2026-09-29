@@ -1,0 +1,82 @@
+<view wx:if="{{adminAccessState === 'checking'}}" class="admin-access-state">正在核验掌勺人权限…</view>
+<view wx:if="{{adminAccessState === 'error'}}" class="admin-access-state">权限核验失败，请重试<button bindtap="refreshAdminAccess">重试核验</button></view>
+<block wx:if="{{adminAccessState === 'ready'}}">
+  <view class="cleanup-page safe-bottom">
+    <view class="cleanup-header mori-card">
+      <view class="cleanup-title">{{viewType === 'files' ? '无引用图片清理' : '历史菜品清理'}}</view>
+      <view class="cleanup-subtitle">{{viewType === 'files' ? '查看图片，清理不再使用的文件' : '核对历史菜品，清理不再使用的记录'}}</view>
+    </view>
+    <view wx:if="{{maintenanceError}}" class="history-error">{{maintenanceError}}<button bindtap="onShow">重新载入</button></view>
+  <view wx:if="{{isAdmin && viewType === 'history'}}" class="history-cleanup">
+    <button bindtap="onToggleHistory" disabled="{{batchRunning}}">{{historyOpen ? '收起历史删除候选' : '查看历史软删除候选'}}</button>
+    <view wx:if="{{historyOpen}}">
+      <view class="history-note">以下是旧版本留下的软删除菜品。逐项核对影响后才会物理删除，图片另行清理。</view>
+      <view wx:if="{{historyLoading}}">正在载入…</view>
+      <view wx:if="{{historyError}}" class="history-error">{{historyError}}<button bindtap="loadHistoryCandidates">重试</button></view>
+      <view wx:if="{{historyCandidates.length}}" class="cleanup-toolbar">
+        <view class="history-note">共 {{historyCandidates.length}} 道历史候选，已选择 {{historySelectedCount}} 道。</view>
+        <button bindtap="onSelectAllHistory" disabled="{{batchRunning}}">{{historySelectedCount === historyCandidates.length ? '取消全选' : '全选候选'}}</button>
+        <button bindtap="onPrepareHistoryBatch" disabled="{{!historySelectedCount || batchRunning}}" loading="{{batchRunning}}">汇总核对并清理 {{historySelectedCount}} 道</button>
+      </view>
+      <view wx:if="{{!historyLoading && !historyError && !historyCandidates.length}}">暂无历史软删除候选</view>
+      <view wx:for="{{historyCandidates}}" wx:key="id" class="history-candidate {{item.selected ? 'candidate-selected' : ''}}">
+        <view class="candidate-title">{{item.name}}</view>
+        <view class="candidate-meta">删除时间：{{item.deletedAtText}}</view>
+        <view class="candidate-actions">
+          <button bindtap="onToggleHistorySelection" data-id="{{item.id}}" disabled="{{batchRunning}}">{{item.selected ? '☑ 已选择' : '□ 选择'}}</button>
+          <button class="cleanup-primary" bindtap="onDelete" data-id="{{item.id}}" data-version="{{item.version}}">核对并清理</button>
+        </view>
+      </view>
+      <view wx:for="{{historyResults}}" wx:key="id" class="history-candidate">
+        <view>{{item.name}}：{{item.status}}</view>
+        <view wx:if="{{item.reason}}">{{item.reason}}</view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{batchPreview}}" class="delete-backdrop">
+    <view class="delete-card">
+      <view class="delete-title">确认批量清理历史菜品？</view>
+      <view class="delete-detail">将逐项物理删除 {{batchPreview.dishCount}} 道菜、{{batchPreview.variantCount}} 个规格；清除 {{batchPreview.cartItemCount}} 个未提交购物车项。</view>
+      <view class="delete-detail">{{batchPreview.submittedItemCount}} 条已提交点单及 {{batchPreview.menuItemCount}} 条家庭菜单保留历史快照。</view>
+      <view class="delete-detail">{{batchPreview.imageCount}} 道菜有关联图片，图片另行清理。</view>
+      <view wx:for="{{batchPreview.items}}" wx:key="dishId" class="delete-detail">{{item.name}}（{{item.variantCount}} 个规格）</view>
+      <view class="delete-actions">
+        <button class="delete-cancel" bindtap="onCancelHistoryBatch" disabled="{{batchRunning}}">❌ 取消</button>
+        <button class="delete-confirm" bindtap="onConfirmHistoryBatch" loading="{{batchRunning}}" disabled="{{batchRunning}}">✅ 确认删除</button>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{isAdmin && viewType === 'files'}}" class="history-cleanup">
+    <button bindtap="onToggleFileCleanup">{{fileCleanupOpen ? '收起图片清理' : '查看无引用图片'}}</button>
+    <view wx:if="{{fileCleanupOpen}}">
+      <view class="history-note">仅清理未被菜品或头像使用的图片，清理进度会显示在卡片中。</view>
+      <button bindtap="loadFileCleanupCandidates" disabled="{{fileCleanupLoading}}">刷新候选</button>
+      <view wx:if="{{fileCleanupLoading}}">正在载入…</view>
+      <view wx:if="{{fileCleanupError}}" class="history-error">{{fileCleanupError}}</view>
+      <view wx:if="{{!fileCleanupLoading && !fileCleanupError && !fileCandidates.length}}">暂无可查看的图片候选</view>
+      <view wx:for="{{fileCandidates}}" wx:key="fileId" class="history-candidate">
+        <view class="file-summary">
+          <image wx:if="{{item.thumbnailUrl}}" class="file-thumbnail" src="{{item.thumbnailUrl}}" mode="aspectFill" data-id="{{item.fileId}}" binderror="onThumbnailError" />
+          <view wx:else class="file-thumbnail thumbnail-empty">图片暂不可用</view>
+          <view class="file-info">
+        <view class="candidate-title">图片文件</view>
+        <view class="candidate-id">{{item.fileId}}</view>
+        <view class="candidate-meta">{{item.sizeText}} · {{item.createdAtText}}</view>
+          </view>
+        </view>
+        <view wx:if="{{!item.canCleanup}}">仍被其他用途引用，不能清理</view>
+        <view wx:if="{{item.taskStatus}}">任务：{{item.taskStatus === 'COMPLETED' ? '已完成' : item.taskStatus === 'FAILED' ? '失败，可重试' : item.taskStatus === 'OBJECT_DELETED' ? '对象已删，元数据待清理' : item.taskStatus === 'DELETING' ? '正在清理' : item.taskStatus === 'SKIPPED' ? '已跳过' : '排队中'}}</view>
+        <view wx:if="{{item.failureText}}" class="history-error">{{item.failureText}}</view>
+        <button wx:if="{{item.taskId}}" bindtap="onRefreshFileCleanupTask" data-id="{{item.fileId}}" data-taskid="{{item.taskId}}">刷新任务状态</button>
+        <button wx:if="{{item.canCleanup && (!item.taskStatus || item.taskStatus === 'FAILED')}}" bindtap="onRequestFileCleanup" data-id="{{item.fileId}}" disabled="{{!!fileCleanupBusy || fileCleanupUncertain === item.fileId}}">
+          {{item.taskStatus === 'FAILED' ? '重试清理' : '清理'}}
+        </button>
+        <view wx:if="{{fileCleanupUncertain === item.fileId}}">申请结果待核对，请先刷新候选。</view>
+      </view>
+    </view>
+  </view>
+
+
+    <dish-delete-confirm preview="{{deletePreview}}" deleting="{{deleting}}" error="{{deleteError}}" blocked="{{deleteBlocked}}" bind:confirm="onConfirmDishDelete" bind:cancel="onCancelDishDelete" bind:reconcile="onReconcileDishDelete" />
+  </view>
+</block>

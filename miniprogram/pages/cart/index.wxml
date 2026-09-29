@@ -1,0 +1,90 @@
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="cart-page safe-bottom">
+  <!-- 1. 顶部品牌栏 -->
+  <view class="brand-top-bar">
+    <view class="mascot-badge">🍙</view>
+    <view class="brand-logo-text-group">
+      <view class="brand-logo-title">Tobacco‘s kitchen</view>
+      <view class="brand-logo-sub">一起吃饭 · 更有家的味道</view>
+    </view>
+  </view>
+
+  <!-- 2. 暖橙主横幅 (我的选择) -->
+  <view class="tobacco-banner">
+    <view class="banner-content">
+      <view class="banner-main-title">我的选择</view>
+      <view class="banner-subtitle">这是家人们今天一起 选出的幸福味道~</view>
+    </view>
+    <view class="banner-illus-box">
+      <view class="illus-bubble">期待开饭！♡</view>
+      <view class="illus-bowl-wrap">
+        <view class="illus-bowl-face">🥣</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 已选菜品列表 (对标图 5) -->
+  <view wx:if="{{loading}}" class="empty-cart-state">正在加载当前餐次选择…</view>
+  <view wx:elif="{{loadError}}" class="empty-cart-state">
+    <view>选择加载失败：{{loadError}}</view>
+    <button bindtap="onRetry">重新加载</button>
+  </view>
+  <view class="cart-section" wx:elif="{{cartItems.length > 0}}">
+    <view class="cart-list">
+      <view class="cart-item-card" wx:for="{{cartItems}}" wx:key="variantId">
+        <!-- 菜品配图 -->
+        <image 
+          class="item-img" 
+          src="{{item.image ? item.image.url : 'https://images.unsplash.com/photo-1544025162-d76694265947?w=300'}}" 
+          mode="aspectFill" />
+
+        <!-- 菜品与规格名 -->
+        <view class="item-info">
+          <view class="item-name">{{item.dishName}}</view>
+          <view class="item-variant-chip">{{item.variantName}}</view>
+          <view class="item-portion">{{item.portionDescription || '美味家常'}}</view>
+          <view wx:if="{{item.note}}" class="item-portion">本次备注：{{item.note}}</view>
+        </view>
+
+        <!-- 垃圾桶与步进器操作栏 (对标图 5) -->
+        <view class="item-right-actions">
+          <view class="btn-del-trash" bindtap="onRemoveItem" data-id="{{item.variantId}}">
+            <text class="trash-icon">🗑</text>
+          </view>
+          <view class="stepper-box">
+            <view class="stepper-btn" bindtap="onStepperMinus" data-id="{{item.variantId}}">-</view>
+            <view class="stepper-val">1</view>
+            <view class="stepper-btn" bindtap="onStepperPlus" data-id="{{item.variantId}}">+</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 4. 治愈插画小金句卡片 (对标图 5) -->
+    <view class="warm-quote-box">
+      <view class="quote-text">用美食串起每一个平凡的日子，就是最幸福的生活 ♡</view>
+    </view>
+
+    <!-- 6. 底部提交大按钮 (对标图 5) -->
+    <view class="cart-bottom-cta">
+      <button class="tobacco-btn-pill btn-submit-menu" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting || loading || !loadedSessionId}}">
+        {{personalMenu ? '提交追加菜品' : '提交今日菜单'}}  →
+      </button>
+    </view>
+  </view>
+
+  <!-- 空购物车状态 -->
+  <view class="empty-cart-state" wx:else>
+    <view class="empty-cart-icon">🛒</view>
+    <view class="empty-cart-title">你的菜篮子还是空的哦~</view>
+    <view class="empty-cart-sub">去菜品库挑选想吃的菜，和家人一起开饭吧！</view>
+    <navigator url="/pages/admin-dishes/index" open-type="switchTab" class="tobacco-btn-pill btn-empty-go">
+      去选菜  →
+    </navigator>
+  </view>
+
+  <!-- 底部治愈金句 -->
+  <view class="doodle-footer-quote">
+    一家人，一顿饭，就是最好的时光 ♡
+  </view>
+</view>

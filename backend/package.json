@@ -1,0 +1,46 @@
+{
+  "name": "family-meals-backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/backend/src/main.js",
+    "test:base": "tsx --test scripts/test-common.ts scripts/test-http-contract.ts scripts/test-images.ts scripts/test-transactions.ts",
+    "test:http": "tsc && node dist/backend/scripts/test-base-http.js",
+    "test:isolated": "tsc && node dist/backend/scripts/test-isolated.js",
+    "test:menu": "tsx --test test/menu/*.test.ts",
+    "test:menu:http": "tsc && node dist/backend/scripts/test-menu-http.js",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "check:environment": "tsx scripts/check-environment.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "12.0.1",
+    "@nestjs/config": "12.0.0",
+    "@nestjs/core": "12.0.1",
+    "@nestjs/jwt": "12.0.1",
+    "@nestjs/platform-express": "12.0.3",
+    "@nestjs/schedule": "12.0.1",
+    "@nestjs/swagger": "12.0.1",
+    "@prisma/adapter-mariadb": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.15.1",
+    "cos-nodejs-sdk-v5": "3.0.0",
+    "dotenv": "17.4.2",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "sharp": "0.35.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.4",
+    "prisma": "7.10.0",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3"
+  }
+}

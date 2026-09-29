@@ -1,0 +1,79 @@
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="pm-page safe-bottom">
+  <view wx:if="{{loading}}" class="mori-card">正在加载点单…</view>
+  <view wx:elif="{{loadError}}" class="mori-card">
+    <view>{{loadError}}</view>
+    <button bindtap="onRetry">重新加载</button>
+  </view>
+  <!-- 未提交状态空卡片（例如刚切换到未点菜成员小明时） -->
+  <view wx:if="{{!loading && !loadError && !personalMenu}}" class="mori-card empty-pm-card">
+    <view class="empty-icon">🍽</view>
+    <view class="empty-title">当餐尚未提交点单</view>
+    <view class="empty-desc">您尚未在当餐提交选菜。可前往点餐页面挑选想吃的菜品规格，提交后掌勺人将统筹制作！</view>
+    <navigator url="/pages/index/index" open-type="switchTab" class="mori-btn-primary w-full mt-3">
+      立即前往首页点菜 ›
+    </navigator>
+  </view>
+
+  <!-- 头部卡片 -->
+  <view class="pm-header mori-card" wx:if="{{personalMenu}}">
+    <view class="flex-between">
+      <view>
+        <view class="title">今日已提交点单</view>
+        <view class="sub-time">提交时间：{{submittedTime}}</view>
+      </view>
+      <view class="mori-badge badge-primary">版本 v{{personalMenu.version}}</view>
+    </view>
+  </view>
+
+  <!-- 菜品审核进展清单 -->
+  <view class="items-list" wx:if="{{personalMenu}}">
+    <block wx:for="{{personalMenu.items}}" wx:key="variantId">
+      <view class="item-card mori-card">
+        <view class="item-top">
+          <view class="dish-title">{{item.dishName}}</view>
+          <text wx:if="{{item.dishDeleted}}" class="mori-badge badge-danger">已删除</text>
+          <!-- 状态徽章 -->
+          <view wx:if="{{item.decision === 'CONFIRMED'}}" class="mori-badge badge-primary">
+            已确认 · 制作 {{item.plannedQuantity}} 份
+          </view>
+          <view wx:elif="{{item.decision === 'CANCELLED'}}" class="mori-badge badge-danger">
+            已取消
+          </view>
+          <view wx:else class="mori-badge badge-neutral">
+            等待掌勺人审核
+          </view>
+        </view>
+
+        <view wx:if="{{item.needsReview && item.decision !== 'UNREVIEWED'}}" class="mori-badge badge-accent">需求已更新，待掌勺人复核；以上为上次决定</view>
+        <view class="item-variant">规格：{{item.variantName}} ({{item.portionDescription}})</view>
+        <view class="note-content">本次备注：{{item.note || '未填写'}}</view>
+        <button class="btn-edit-note" bindtap="onOpenEditNote" data-id="{{item.variantId}}" disabled="{{savingNote}}">修改这道菜的备注</button>
+        
+        <view wx:if="{{item.decision === 'CANCELLED' && item.reason}}" class="cancel-msg">
+          取消原因：{{item.reason}}
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view wx:if="{{personalMenu.note}}" class="note-card mori-card">
+    <view>历史整单备注（旧版记录）</view><view>{{personalMenu.note}}</view>
+  </view>
+
+  <!-- 审核取消重选快捷卡片 -->
+  <view class="reorder-prompt-card mori-card" wx:if="{{hasCancelledItems}}">
+    <view class="reorder-title">📢 有选菜已被掌勺人取消</view>
+    <view class="reorder-desc">厨房可能食材不足或有调整，建议您重新挑选其他可用菜品，掌勺人将统筹安排制作。</view>
+    <button class="mori-btn-primary w-full mt-3" bindtap="onGoReorder">
+      更换其他菜品 / 重新点菜 ›
+    </button>
+  </view>
+
+  <!-- 底部快捷操作 -->
+  <view class="bottom-box">
+    <navigator url="/pages/family-menu/index" class="mori-btn-secondary w-full">
+      查看全家总菜单看板 ›
+    </navigator>
+  </view>
+</view>

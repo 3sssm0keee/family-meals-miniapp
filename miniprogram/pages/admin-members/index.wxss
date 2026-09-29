@@ -1,0 +1,28 @@
+.am-page { padding: 24rpx; min-height: 100vh; }
+.title { font-size: 32rpx; font-weight: 700; color: #2C332D; }
+.sub-title { font-size: 24rpx; color: #747D75; margin-top: 6rpx; }
+.invite-grid { display: flex; flex-direction: column; gap: 14rpx; margin-top: 20rpx; }
+.invite-card { min-width: 0; padding: 24rpx; text-align: center; box-sizing: border-box; }
+.invite-card .title { font-size: 26rpx; }
+.invite-card .sub-title { min-height: 0; }
+.am-page button.invite-create { display: block; width: 100%; min-width: 0; box-sizing: border-box; margin: 20rpx 0 0; height: 72rpx; line-height: 72rpx; font-size: 24rpx; color: #fff; background: #ee7b57; }
+.invite-result { margin-top: 16rpx; overflow-wrap: anywhere; font-size: 22rpx; color: #5a4d45; }
+.invite-actions, .member-actions { display: flex; gap: 12rpx; margin-top: 16rpx; }
+.am-page .invite-actions button, .am-page .member-actions button { flex: 1; min-width: 0; box-sizing: border-box; margin: 0; padding: 0 8rpx; height: 72rpx; line-height: 72rpx; font-size: 22rpx; }
+.am-page .invite-actions button { color: #a95237; background: #fff0e8; }
+.am-page button.member-promote { color: #267249; background: #e8f6ed; }
+.am-page button.member-remove { color: #b64035; background: #fff0ef; }
+.am-page button[disabled] { opacity: .55; }
+.member-list { margin-top: 26rpx; }
+.member-list .title { margin-bottom: 14rpx; }
+.m-card { padding: 24rpx; margin-bottom: 14rpx; text-align: center; }
+.member-main { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10rpx; }
+.m-name { font-size: 30rpx; font-weight: 700; color: #2C332D; overflow-wrap: anywhere; }
+.badge-expired { color: #a44828; background: #fff0e8; }
+.join-time { font-size: 22rpx; color: #747d75; margin-top: 8rpx; }
+.member-state { padding: 24rpx; text-align: center; color: #747d75; }
+.am-page button { font-family: inherit; border-radius: 32rpx; }
+.am-page button::after { border: none; }
+.member-main .mori-badge { display: inline-flex; align-items: center; justify-content: center; text-align: center; min-height: 44rpx; padding: 6rpx 16rpx; line-height: 1.4; }
+.header-card { text-align: center; }
+.am-page button.invite-create, .am-page .invite-actions button, .am-page .member-actions button { display: flex; align-items: center; justify-content: center; padding: 0 16rpx; line-height: 1.4; }

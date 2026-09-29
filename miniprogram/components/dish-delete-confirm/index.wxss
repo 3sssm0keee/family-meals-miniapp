@@ -1,0 +1,10 @@
+.delete-backdrop { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1000; background: rgba(35, 35, 35, .48); display: flex; align-items: center; justify-content: center; padding: 24rpx; }
+.delete-card { width: 100%; max-width: 660rpx; padding: 32rpx; border-radius: 26rpx; background: #fff; box-sizing: border-box; }
+.delete-title { font-size: 31rpx; font-weight: 700; color: #2c332d; }
+.delete-name { margin: 16rpx 0; font-size: 29rpx; color: #2c332d; overflow-wrap: anywhere; }
+.delete-detail { margin-top: 10rpx; font-size: 23rpx; line-height: 1.5; color: #5a625c; }
+.delete-error { margin-top: 16rpx; color: #b64035; font-size: 23rpx; }
+.delete-actions { display: flex; gap: 16rpx; margin-top: 28rpx; }
+.delete-actions button { flex: 1; margin: 0; font-size: 24rpx; }
+.delete-cancel { color: #b64035; background: #fff0ef; }
+.delete-confirm { color: #267249; background: #e8f6ed; }

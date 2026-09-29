@@ -1,0 +1,235 @@
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="home-page safe-bottom">
+  <!-- 1. 顶部品牌栏：🍙 Tobacco‘s kitchen -->
+  <view class="brand-top-bar">
+    <view class="mascot-badge">🍙</view>
+    <view class="brand-logo-text-group">
+      <view class="brand-logo-title">Tobacco‘s kitchen</view>
+      <view class="brand-logo-sub">一起吃饭 · 更有家的味道</view>
+    </view>
+    <view class="top-nav-actions">
+      <navigator url="/pages/family-select/index" class="btn-fam-switch">
+        🏡 {{activeFamily.name || '请选择家庭'}} ▾
+      </navigator>
+    </view>
+  </view>
+
+  <!-- 2. 暖橙主横幅 (今晚吃什么？) -->
+  <view class="tobacco-banner">
+    <view class="banner-content">
+      <view class="banner-main-title">今晚吃什么？</view>
+      <view class="banner-subtitle">让家人一起选出 今天的幸福味道~</view>
+      <view class="banner-meal-switch">
+        <text class="meal-tag {{currentMealType === 'LUNCH' ? 'active' : ''}}" bindtap="onSwitchMeal" data-type="LUNCH">午餐</text>
+        <text class="meal-tag {{currentMealType === 'DINNER' ? 'active' : ''}}" bindtap="onSwitchMeal" data-type="DINNER">晚餐</text>
+      </view>
+    </view>
+    <view class="banner-illus-box">
+      <view class="illus-bubble">好好吃饭 就是幸福！♡</view>
+      <view class="illus-bowl-wrap">
+        <view class="illus-bowl-face">🍲</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 家人们 一起选菜，一起享受家的味道 (对标图 1) -->
+  <view class="tobacco-card family-card">
+    <view class="family-card-header">
+      <view class="family-card-title">
+        <text class="title-bold">家人们</text>
+        <text class="title-sub">一起选菜，一起享受家的味道</text>
+      </view>
+      <view wx:if="{{!isAdmin && currentMemberName}}" class="family-header-right">
+        <view class="member-name-card">{{currentMemberName}}</view>
+      </view>
+    </view>
+
+    <!-- 成员头像滑块/列表（点击可切换当前角色） -->
+    <scroll-view wx:if="{{membersList.length}}" scroll-x class="members-scroll" enable-flex>
+      <view 
+        wx:for="{{membersList}}" 
+        wx:key="id" 
+        class="member-avatar-item {{currentMemberId === item.id ? 'active' : ''}}"
+        bindtap="onQuickSwitchMember"
+        data-id="{{item.id}}"
+        data-name="{{item.displayName}}"
+        data-role="{{item.role}}">
+        <view class="member-avatar-circle">
+          <image wx:if="{{item.avatarUrl}}" class="member-avatar-img" src="{{item.avatarUrl}}" mode="aspectFill" /><view wx:else class="member-avatar-placeholder">{{item.displayName}}</view>
+          <view wx:if="{{item.hasSubmitted}}" class="dot-submitted">✓</view>
+        </view>
+        <view class="member-avatar-name">{{item.displayName}}</view>
+        <view class="member-avatar-tag {{item.id === 'm5' ? 'tag-unsub' : (item.role === 'ADMIN' ? 'tag-admin' : '')}}">
+          {{item.role === 'ADMIN' ? '掌勺' : (item.role === 'GUEST' ? '访客' : '家人')}}
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 微信真实头像自定义入口 (Point 5) -->
+    <view class="avatar-sync-row">
+      <button class="btn-choose-avatar-pill" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar" loading="{{savingAvatar}}" disabled="{{savingAvatar}}">
+        📷 {{useMock ? '本次演示头像（不保存）' : '选择并保存我的头像'}}
+      </button>
+    </view>
+  </view>
+
+  <view wx:if="{{!useMock}}" class="tobacco-card nickname-card">
+    <view class="nickname-head-row">
+      <view class="nickname-heading">
+        <view class="nickname-label-card">我的昵称：</view>
+        <view class="nickname-value-card">{{nicknameSaved || '未设置'}}</view>
+      </view>
+      <button wx:if="{{!nicknameEditing}}" class="nickname-edit" bindtap="onEditNickname">编辑</button>
+      <button wx:if="{{nicknameEditing && nicknameSaved}}" class="nickname-edit" bindtap="onCancelNicknameEdit" disabled="{{nicknameSaving}}">取消编辑</button>
+    </view>
+    <view wx:if="{{nicknameEditing}}">
+      <input class="nickname-input" type="{{nicknameInputType}}" value="{{nicknameDraft}}" focus="{{nicknameFocus}}"
+        bindinput="onNicknameInput" bindblur="onNicknameBlur" maxlength="40"
+        disabled="{{nicknameSaving}}" placeholder="手动输入或选择微信昵称" />
+      <view class="nickname-actions">
+        <button class="nickname-wechat" bindtap="onChooseNickname" disabled="{{nicknameSaving}}">填写昵称</button>
+        <button class="nickname-save" bindtap="onSaveNickname" loading="{{nicknameSaving}}"
+          disabled="{{nicknameSaving || !nicknameDirty}}">保存昵称</button>
+      </view>
+      <view wx:if="{{nicknameError}}" class="nickname-error">{{nicknameError}}</view>
+    </view>
+  </view>
+
+  <!-- 管理员专属工作横幅（当身份为掌勺人时展示，区分用户界面与管理员界面） -->
+  <view class="admin-duty-banner" wx:if="{{isAdmin}}" bindtap="onGoAdminConsole">
+    <view class="duty-left">
+      <view class="duty-badge">👨‍🍳 掌勺人工作台</view>
+      <view class="duty-title">今日选餐待掌勺统筹审核</view>
+      <view class="duty-sub">查看本餐次需求，审核制作计划 ›</view>
+    </view>
+    <view class="duty-arrow-btn">进入 ›</view>
+  </view>
+
+  <!-- 掌勺人取消/拒绝后的重新点餐提示 -->
+  <view class="cancel-alert-card tobacco-card" wx:if="{{hasCancelledItems}}">
+    <view class="alert-content">
+      <text class="alert-icon">📢</text>
+      <view class="alert-info">
+        <view class="alert-title">有选菜被掌勺人取消</view>
+        <view class="alert-reasons">{{cancelledReasons}}</view>
+      </view>
+    </view>
+    <button wx:if="{{currentSession.canAppend}}" class="tobacco-btn-pill alert-action-btn" bindtap="onReorder">
+      {{isReordering ? '正在追加（原点单保留）' : '追加其他菜品 ›'}}
+    </button>
+  </view>
+
+  <!-- 4. 今日家庭菜单 (对标图 1) -->
+  <view class="today-menu-section">
+    <view class="section-header">
+      <view class="section-title">
+        <text class="section-icon">🍴</text>
+        <text class="section-title-text">今日家庭菜单</text>
+      </view>
+      <view class="btn-refresh" bindtap="onShuffleDishes">
+        <text>🔄 换一批</text>
+      </view>
+    </view>
+
+    <!-- 3列美食卡片网格 (对标图 1) -->
+    <view class="dishes-grid">
+      <view 
+        wx:for="{{displayDishes}}" 
+        wx:key="id" 
+        class="dish-grid-card"
+        bindtap="onOpenVariantModal"
+        data-dish="{{item}}">
+        <view class="dish-card-img-wrap">
+          <image class="dish-grid-img" src="{{item.image ? item.image.url : 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400'}}" mode="aspectFill" />
+          <view class="dish-top-tag">{{item.tag || '家常'}}</view>
+        </view>
+        <view class="dish-grid-info">
+          <view class="dish-grid-name">{{item.name}}</view>
+          <view class="dish-grid-footer">
+            <view class="dish-grid-sub">{{item.variants.length}} 种规格</view>
+            <view wx:if="{{useMock}}" class="dish-heart-btn {{item.isFavorite ? 'active' : ''}}" catchtap="onToggleFavorite" data-id="{{item.id}}">
+              {{item.isFavorite ? '❤️' : '♡'}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 5. 底部去选菜主按钮 (对标图 1) -->
+  <view class="main-cta-box">
+    <button class="tobacco-btn-pill btn-go-select" bindtap="onGoSelectDishes">
+      去选菜  →
+    </button>
+  </view>
+
+  <!-- 6. 底部治愈手绘金句 -->
+  <view class="doodle-footer-quote">
+    一家人，一顿饭，就是最好的时光 ♡
+  </view>
+
+  <!-- 7. 规格选择与加入浮层 (对标图 2 & 3) -->
+  <view class="variant-modal-mask" wx:if="{{showVariantModal}}" bindtap="onCloseVariantModal">
+    <view class="variant-modal-content" catchtap="onPreventClose">
+      <!-- 顶部大图 Hero -->
+      <view class="modal-hero-wrap">
+        <image class="modal-hero-img" src="{{currentDish.image ? currentDish.image.url : 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600'}}" mode="aspectFill" />
+        <view class="modal-close-btn" bindtap="onCloseVariantModal">✕</view>
+        <view class="modal-bubble-quote">家常的味道 最治愈！♡</view>
+      </view>
+
+      <!-- 菜品介绍与品牌标 -->
+      <view class="modal-dish-header">
+        <view class="modal-dish-title-row">
+          <view class="modal-dish-name">{{currentDish.name}}</view>
+          <view class="modal-brand-tag">🍙 Tobacco‘s kitchen</view>
+        </view>
+        <view class="modal-dish-desc">{{currentDish.description}}</view>
+      </view>
+
+      <!-- 选择版本 -->
+      <view class="variant-select-section">
+        <view class="variant-select-title-row">
+          <view class="variant-title-left">
+            <text class="title-icon">🥢</text>
+            <text class="title-text">选择版本</text>
+          </view>
+          <text class="variant-title-sub">同样的美味，不同的选择 ♡</text>
+        </view>
+
+        <!-- 横向版本对比卡片 (对标图 2 & 3) -->
+        <view class="variants-row">
+          <view 
+            wx:for="{{currentDish.variants}}" 
+            wx:key="id"
+            class="variant-card-item {{selectedVariantId === item.id ? 'selected' : ''}}"
+            bindtap="onSelectVariant"
+            data-id="{{item.id}}">
+            <view class="variant-radio-badge">
+              <text wx:if="{{selectedVariantId === item.id}}">✓</text>
+            </view>
+            <view class="variant-bowl-emoji">🍲</view>
+            <view class="variant-item-name">{{item.name}}</view>
+            <view class="variant-item-portion">{{item.portionDescription}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-note-section">
+        <view class="note-section-title">本次这道菜的备注（选填）</view>
+        <view wx:if="{{choiceLoading}}">正在读取备注…</view>
+        <view wx:if="{{choiceError}}">{{choiceError}}</view>
+        <textarea class="note-input" value="{{dishNote}}" bindinput="onInputDishNote" maxlength="500" disabled="{{choiceLoading || choiceSaving || !!choiceError}}" placeholder="例如：少盐、不放葱；仅用于本次所选规格" />
+        <view wx:if="{{choiceSubmitted}}">已点的菜保持原审核结果，备注更新后掌勺人可见。</view>
+      </view>
+
+      <!-- 加入我的选择大按钮 -->
+      <view class="modal-bottom-btn-box">
+        <button class="tobacco-btn-pill btn-modal-add" bindtap="onConfirmAddChoice" loading="{{choiceSaving}}" disabled="{{choiceLoading || choiceSaving || !!choiceError || !selectedVariantId}}">
+          {{choiceSubmitted ? '保存这道菜的备注' : '加入我的选择  →'}}
+        </button>
+        <view class="modal-footer-slogan">一家人，一顿饭，就是最好的时光 ♡</view>
+      </view>
+    </view>
+  </view>
+</view>

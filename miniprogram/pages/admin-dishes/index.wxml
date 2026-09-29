@@ -1,0 +1,165 @@
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="dishes-page safe-bottom">
+  <view wx:if="{{roleError}}" class="admin-access-state">{{roleError}}<button bindtap="onShow">重试核验</button></view>
+  <!-- 1. 顶部品牌栏 -->
+  <view class="brand-top-bar">
+    <view class="mascot-badge">🍙</view>
+    <view class="brand-logo-text-group">
+      <view class="brand-logo-title">Tobacco‘s kitchen</view>
+      <view class="brand-logo-sub">一起吃饭 · 更有家的味道</view>
+    </view>
+    <view class="top-nav-actions" wx:if="{{isAdmin}}">
+      <navigator url="/pages/admin-dish-edit/index" class="btn-new-dish">
+        + 新建菜品
+      </navigator>
+    </view>
+  </view>
+
+  <!-- 2. 暖橙主横幅 (菜品库) -->
+  <view class="tobacco-banner">
+    <view class="banner-content">
+      <view class="banner-main-title">菜品库</view>
+      <view class="banner-subtitle">海量家常菜谱 让家的味道触手可及~</view>
+    </view>
+    <view class="banner-illus-box">
+      <view class="illus-bubble">今天想吃啥？♡</view>
+      <view class="illus-bowl-wrap">
+        <view class="illus-bowl-face">📖</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 搜索栏 (对标图 4) -->
+  <view class="search-bar-wrap">
+    <view class="search-input-box">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索想吃的家常菜..." 
+        value="{{searchKeyword}}" 
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm" />
+      <text class="search-clear" wx:if="{{searchKeyword}}" bindtap="onClearSearch">×</text>
+    </view>
+    <button class="tobacco-btn-pill btn-search" bindtap="onSearchConfirm">搜索</button>
+  </view>
+
+  <!-- 4. 分类标签滑块 (全部 / 家常菜 / 素菜 / 汤羹 / 下饭菜) -->
+  <scroll-view scroll-x class="category-chips-scroll" enable-flex>
+    <view 
+      wx:for="{{categories}}" 
+      wx:key="*this"
+      class="chip-item {{activeCategory === item ? 'active' : ''}}"
+      bindtap="onCategoryChange"
+      data-category="{{item}}">
+      {{item}}
+    </view>
+  </scroll-view>
+
+  <!-- 5. 3列美食卡片网格 (对标图 4) -->
+  <view class="dishes-grid-container">
+    <view class="dishes-grid" wx:if="{{filteredDishes.length > 0}}">
+      <view 
+        wx:for="{{filteredDishes}}" 
+        wx:key="id" 
+        class="dish-grid-card"
+        bindtap="onOpenVariantModal"
+        data-dish="{{item}}">
+        <view class="dish-card-img-wrap">
+          <image class="dish-grid-img" src="{{item.image ? item.image.url : 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400'}}" mode="aspectFill" />
+          <view class="dish-top-tag">{{item.tag || '推荐'}}</view>
+          <view wx:if="{{item.kind === 'TEMPORARY'}}" class="dish-temp-tag">当餐特别</view>
+        </view>
+        <view class="dish-grid-info">
+          <view class="dish-grid-name">{{item.name}}</view>
+          <view class="dish-grid-variants-info">{{item.variants.length || 1}} 种规格</view>
+          <view class="dish-grid-action-row">
+            <button class="tobacco-btn-pill btn-card-select" catchtap="onOpenVariantModal" data-dish="{{item}}">
+              选择
+            </button>
+            <button wx:if="{{isAdmin}}" class="btn-card-edit" catchtap="onEditDish" data-id="{{item.id}}">
+              编辑 ✎
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{filteredDishes.length === 0}}">
+      <view class="empty-icon">🍳</view>
+      <view class="empty-title">未找到相关菜品</view>
+      <view class="empty-sub">换个关键词或者在上方新增菜谱吧~</view>
+    </view>
+  </view>
+
+  <!-- 6. 底部手绘治愈金句 -->
+  <view class="doodle-footer-quote">
+    用心做每一道菜，温暖每一个胃 ♡
+  </view>
+
+  <!-- 7. 规格选择与加入浮层 (对标图 2 & 3) -->
+  <view class="variant-modal-mask" wx:if="{{showVariantModal}}" bindtap="onCloseVariantModal">
+    <view class="variant-modal-content" catchtap="onPreventClose">
+      <!-- 顶部大图 Hero -->
+      <view class="modal-hero-wrap">
+        <image class="modal-hero-img" src="{{currentDish.image ? currentDish.image.url : 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600'}}" mode="aspectFill" />
+        <view class="modal-close-btn" bindtap="onCloseVariantModal">✕</view>
+        <view class="modal-bubble-quote">家常的味道 最治愈！♡</view>
+      </view>
+
+      <!-- 菜品介绍与品牌标 -->
+      <view class="modal-dish-header">
+        <view class="modal-dish-title-row">
+          <view class="modal-dish-name">{{currentDish.name}}</view>
+          <view class="modal-brand-tag">🍙 Tobacco‘s kitchen</view>
+        </view>
+        <view class="modal-dish-desc">{{currentDish.description}}</view>
+      </view>
+
+      <!-- 选择版本 -->
+      <view class="variant-select-section">
+        <view class="variant-select-title-row">
+          <view class="variant-title-left">
+            <text class="title-icon">🥢</text>
+            <text class="title-text">选择版本</text>
+          </view>
+          <text class="variant-title-sub">同样的美味，不同的选择 ♡</text>
+        </view>
+
+        <!-- 横向版本卡片 -->
+        <view class="variants-row">
+          <view 
+            wx:for="{{currentDish.variants}}" 
+            wx:key="id"
+            class="variant-card-item {{selectedVariantId === item.id ? 'selected' : ''}}"
+            bindtap="onSelectVariant"
+            data-id="{{item.id}}">
+            <view class="variant-radio-badge">
+              <text wx:if="{{selectedVariantId === item.id}}">✓</text>
+            </view>
+            <view class="variant-bowl-emoji">🍲</view>
+            <view class="variant-item-name">{{item.name}}</view>
+            <view class="variant-item-portion">{{item.portionDescription}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-note-section">
+        <view class="note-section-title">本次这道菜的备注（选填）</view>
+        <view wx:if="{{choiceLoading}}">正在读取备注…</view>
+        <view wx:if="{{choiceError}}">{{choiceError}}</view>
+        <textarea class="note-input" value="{{dishNote}}" bindinput="onInputDishNote" maxlength="500" disabled="{{choiceLoading || choiceSaving || !!choiceError}}" placeholder="例如：少盐、不放葱；仅用于本次所选规格" />
+        <view wx:if="{{choiceSubmitted}}">已点的菜保持原审核结果，备注更新后掌勺人可见。</view>
+      </view>
+
+      <!-- 加入我的选择大按钮 -->
+      <view class="modal-bottom-btn-box">
+        <button class="tobacco-btn-pill btn-modal-add" bindtap="onConfirmAddChoice" loading="{{choiceSaving}}" disabled="{{choiceLoading || choiceSaving || !!choiceError || !selectedVariantId}}">
+          {{choiceSubmitted ? '保存这道菜的备注' : '加入我的选择  →'}}
+        </button>
+        <view class="modal-footer-slogan">一家人，一顿饭，就是最好的时光 ♡</view>
+      </view>
+    </view>
+  </view>
+</view>

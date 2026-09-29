@@ -1,0 +1,26 @@
+<view class="fs-page safe-bottom">
+  <view wx:if="{{accessExpired}}" class="header-card mori-card">
+    <view class="title">您的临时访问权限已过期</view>
+    <view class="sub-title">请联系管理员获取新的邀请码后再访问。</view>
+    <button class="tobacco-btn-pill invite-submit" bindtap="onEnterNewCode">输入新邀请码</button>
+  </view>
+  <view wx:else class="header-card mori-card">
+    <view class="title">{{families.length ? '选择你的厨房' : '欢迎来到 Tobacco‘s kitchen'}}</view>
+    <view class="sub-title" wx:if="{{loading}}">正在确认家庭身份…</view>
+    <view class="sub-title" wx:elif="{{!families.length}}">你已登录，但尚无家庭访问权限。请输入邀请码注册身份，或使用家人发来的访客邀请。</view>
+  </view>
+  <view class="family-list">
+    <view wx:for="{{families}}" wx:key="id" class="family-item mori-card" bindtap="onSelectFamily" data-id="{{item.id}}">
+      <view><view class="f-name">{{item.name}}</view><view class="f-role">{{item.role === 'ADMIN' ? '掌勺人' : (item.role === 'GUEST' ? '访客' : '家人')}}</view></view><text>进入 ›</text>
+    </view>
+  </view>
+  <view class="mori-card invite-card">
+    <view class="title">凭邀请加入</view>
+    <input class="invite-input" value="{{displayName}}" bindinput="onNameInput" placeholder="填写家人能认出的昵称" maxlength="40" />
+    <input class="invite-input" value="{{code}}" focus="{{codeFocus}}" bindinput="onCodeInput" placeholder="输入邀请码或访客邀请口令" maxlength="128" />
+    <view class="invite-error" wx:if="{{error}}">{{error}}</view>
+    <button class="tobacco-btn-pill invite-submit" bindtap="onRedeemInvite" disabled="{{loading || submitting}}" loading="{{submitting}}">验证邀请并进入</button>
+    <view class="sub-title">临时邀请码提供 24 小时访问；正式成员需掌勺人确认或正式成员邀请。</view>
+    <button wx:if="{{error && !submitting}}" class="retry-button" bindtap="loadFamilies">重新查询身份</button>
+  </view>
+</view>

@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/index/index",
+    "pages/family-menu/index",
+    "pages/admin-console/index",
+    "pages/admin-review/index",
+    "pages/personal-menu/index",
+    "pages/cart/index",
+    "pages/family-select/index",
+    "pages/admin-dishes/index",
+    "pages/admin-cleanup/index",
+    "pages/admin-dish-edit/index",
+    "pages/admin-members/index",
+    "pages/admin-audit/index"
+  ],
+  "lazyCodeLoading": "requiredComponents",
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FFF9F4",
+    "navigationBarTitleText": "Tobacco‘s kitchen",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFF9F4"
+  },
+  "tabBar": {
+    "color": "#8F847E",
+    "selectedColor": "#EE7B57",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/admin-dishes/index",
+        "text": "菜品库",
+        "iconPath": "images/tab-dishes.png",
+        "selectedIconPath": "images/tab-dishes-active.png"
+      },
+      {
+        "pagePath": "pages/cart/index",
+        "text": "我的选择",
+        "iconPath": "images/tab-cart.png",
+        "selectedIconPath": "images/tab-cart-active.png"
+      },
+      {
+        "pagePath": "pages/family-menu/index",
+        "text": "家庭菜单",
+        "iconPath": "images/tab-menu.png",
+        "selectedIconPath": "images/tab-menu-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

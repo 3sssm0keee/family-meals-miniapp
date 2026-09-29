@@ -1,0 +1,37 @@
+<view class="dish-card mori-card">
+  <!-- 头部：菜名、去重人数与临时菜标记 -->
+  <view class="dish-header">
+    <view class="dish-title-box">
+      <view class="dish-name">{{dish.name}}</view>
+      <view class="dish-tags">
+        <text wx:if="{{dish.kind === 'TEMPORARY'}}" class="mori-badge badge-accent">当餐特别菜</text>
+        <text wx:if="{{dish.uniqueParticipantCount > 0}}" class="mori-badge badge-primary">{{dish.uniqueParticipantCount}} 人想吃</text>
+      </view>
+    </view>
+    <view wx:if="{{dish.image && dish.image.url}}" class="dish-thumb">
+      <image class="thumb-img" src="{{dish.image.url}}" mode="aspectFill" lazy-load />
+    </view>
+  </view>
+
+  <view class="dish-desc" wx:if="{{dish.description}}">{{dish.description}}</view>
+
+  <!-- 规格版本列表 -->
+  <view class="variants-container">
+    <block wx:for="{{dish.variants}}" wx:key="id">
+      <view 
+        wx:if="{{item.isAvailable && !item.deletedAt}}"
+        class="variant-item {{selectedVariantMap[item.id] ? 'selected' : ''}}"
+        bindtap="onToggleVariant"
+        data-id="{{item.id}}">
+        <view class="variant-info">
+          <view class="variant-name">{{item.name}}</view>
+          <view class="variant-portion" wx:if="{{item.portionDescription}}">{{item.portionDescription}}</view>
+        </view>
+        <view class="variant-select-icon">
+          <text wx:if="{{selectedVariantMap[item.id]}}" class="icon-checked">✓</text>
+          <text wx:else class="icon-unchecked">○</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,202 @@
+/** Tobacco‘s kitchen 全局温润日式手绘与暖橙珊瑚色系样式规范 **/
+
+page {
+  /* 品牌色系 */
+  --primary: #EE7B57;
+  --primary-dark: #D86643;
+  --primary-light: #FFF0EB;
+  --primary-gradient: linear-gradient(135deg, #F38C6C 0%, #E96D4B 100%);
+  --accent: #FF9E7D;
+  --accent-light: #FFF4E5;
+  --bg-page: #FFF9F4;
+  --bg-card: #FFFFFF;
+  --text-main: #2E2A28;
+  --text-sub: #7C7470;
+  --text-muted: #ABA29D;
+  --border: #F2EAE1;
+  --border-light: #FAF3EC;
+  --danger: #E5534B;
+  --danger-light: #FDF2F2;
+  --tag-peach: #FFE4D9;
+  --tag-peach-text: #E8633F;
+
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+view, text, scroll-view, input, textarea, button {
+  box-sizing: border-box;
+}
+
+/* 品牌头部 Logo (🍙 Tobacco‘s kitchen) */
+.brand-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 28rpx;
+}
+.brand-logo-img {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+.brand-logo-text-group {
+  display: flex;
+  flex-direction: column;
+}
+.brand-logo-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #2E2A28;
+  letter-spacing: 0.5rpx;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.brand-logo-sub {
+  font-size: 20rpx;
+  color: #9C8E85;
+  margin-top: 2rpx;
+}
+
+/* 暖橙主横幅 (Banner) */
+.tobacco-banner {
+  background: var(--primary-gradient);
+  border-radius: 36rpx;
+  padding: 36rpx 32rpx;
+  margin: 16rpx 24rpx 28rpx 24rpx;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10rpx 28rpx rgba(238, 123, 87, 0.28);
+}
+.tobacco-banner-title {
+  font-size: 40rpx;
+  font-weight: 800;
+  letter-spacing: 1rpx;
+  line-height: 1.2;
+}
+.tobacco-banner-sub {
+  font-size: 24rpx;
+  opacity: 0.92;
+  margin-top: 10rpx;
+  line-height: 1.4;
+  max-width: 440rpx;
+}
+
+/* 经典暖白卡片 */
+.mori-card, .tobacco-card {
+  background: var(--bg-card);
+  border-radius: 32rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  border: 1rpx solid var(--border);
+  box-shadow: 0 6rpx 20rpx rgba(214, 175, 155, 0.08);
+}
+
+/* 实体大胶囊主按钮 */
+.mori-btn-primary, .tobacco-btn-pill {
+  background: var(--primary-gradient);
+  color: #FFFFFF;
+  border-radius: 999rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  padding: 24rpx 48rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(238, 123, 87, 0.35);
+  transition: all 0.2s ease;
+  border: none;
+  line-height: 1.3;
+}
+.mori-btn-primary:active, .tobacco-btn-pill:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+/* 浅暖色次级按钮 */
+.mori-btn-secondary, .tobacco-btn-sub {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  padding: 14rpx 32rpx;
+  text-align: center;
+  border: 1rpx solid rgba(238, 123, 87, 0.25);
+}
+
+/* 底部治愈手绘金句 */
+.doodle-footer-quote {
+  text-align: center;
+  font-size: 24rpx;
+  color: #9C8E85;
+  padding: 28rpx 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+}
+.doodle-heart {
+  color: var(--primary);
+  font-size: 26rpx;
+}
+
+/* 标签 Badge */
+.mori-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+.badge-primary {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.badge-accent {
+  background: var(--accent-light);
+  color: #D97706;
+}
+.badge-danger {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+.badge-neutral {
+  background: var(--border-light);
+  color: var(--text-sub);
+}
+.badge-peach {
+  background: var(--tag-peach);
+  color: var(--tag-peach-text);
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  padding: 2rpx 10rpx;
+}
+
+/* 浮动操作栏底部安全区适配 */
+.safe-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 空状态 */
+.empty-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+  color: var(--text-sub);
+}
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+.mock-indicator { padding: 10rpx 24rpx; font-size: 22rpx; color: #80542c; background: #fff0d8; text-align: center; }
+.admin-access-state { margin: 32rpx 24rpx; padding: 36rpx; border-radius: 20rpx; background: #fff; color: #5a4d45; text-align: center; }
+.admin-access-state button { margin-top: 24rpx; }

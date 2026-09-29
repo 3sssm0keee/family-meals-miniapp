@@ -1,0 +1,57 @@
+<view wx:if="{{adminAccessState === 'checking'}}" class="admin-access-state">正在核验掌勺人权限…</view>
+<view wx:if="{{adminAccessState === 'error'}}" class="admin-access-state">权限核验失败，请重试<button bindtap="refreshAdminAccess">重试核验</button></view>
+<block wx:if="{{adminAccessState === 'ready'}}">
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<template name="memberCard">
+  <view class="m-card mori-card">
+    <view class="member-main">
+      <text class="m-name">{{item.displayName}}</text>
+      <view class="mori-badge {{item.role === 'ADMIN' ? 'badge-accent' : 'badge-primary'}}">{{item.role === 'ADMIN' ? '掌勺人' : (item.role === 'GUEST' ? '访客' : '家庭成员')}}</view>
+      <text wx:if="{{item.isExpiredGuest}}" class="mori-badge badge-expired">已到期 · 待处理</text>
+    </view>
+    <view class="join-time">加入：{{item.joinedAtText || '时间待核对'}}</view>
+    <view wx:if="{{item.role === 'GUEST'}}" class="join-time">访问到期：{{item.expiresAtText || '时间待核对'}}</view>
+    <view wx:if="{{item.role === 'GUEST'}}" class="member-actions">
+      <button class="member-promote" data-id="{{item.id}}" bindtap="onMakePermanent" loading="{{busyMemberId === item.id}}" disabled="{{busyMemberId !== ''}}">转为正式成员</button>
+      <button class="member-remove" data-id="{{item.id}}" bindtap="onRemoveMember" disabled="{{busyMemberId !== ''}}">移除</button>
+    </view>
+  </view>
+</template>
+<view class="am-page safe-bottom">
+  <view class="header-card mori-card">
+    <view class="title">家庭成员与邀请</view>
+    <view class="sub-title">管理家庭身份与访客访问时间</view>
+  </view>
+  <view class="invite-grid">
+    <view class="mori-card invite-card">
+      <view class="title">正式成员邀请</view>
+      <view class="sub-title">生成后 24 小时内可使用</view>
+      <button class="invite-create" data-role="MEMBER" bindtap="onCreateInvite" disabled="{{inviteBusy !== ''}}" loading="{{inviteBusy === 'MEMBER'}}">生成正式邀请</button>
+      <view wx:if="{{memberCode}}" class="invite-result">
+        <text>邀请码：{{memberCode}}</text>
+        <view class="invite-actions"><button data-role="MEMBER" bindtap="onCopyInvite">复制</button><button data-role="MEMBER" open-type="share">分享</button></view>
+      </view>
+    </view>
+    <view class="mori-card invite-card">
+      <view class="title">访客邀请</view>
+      <view class="sub-title">访客访问到期后由掌勺人处理</view>
+      <button class="invite-create" data-role="GUEST" bindtap="onCreateInvite" disabled="{{inviteBusy !== ''}}" loading="{{inviteBusy === 'GUEST'}}">生成访客邀请</button>
+      <view wx:if="{{guestCode}}" class="invite-result">
+        <text>邀请码：{{guestCode}}</text>
+        <view class="invite-actions"><button data-role="GUEST" bindtap="onCopyInvite">复制</button><button data-role="GUEST" open-type="share">分享</button></view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{loading}}" class="member-state">正在加载成员…</view>
+  <view wx:if="{{error}}" class="member-state">{{error}}<button bindtap="loadMembers">重新加载</button></view>
+  <view wx:if="{{pendingGuests.length}}" class="member-list">
+    <view class="title">待处理访客（{{pendingGuests.length}}）</view>
+    <block wx:for="{{pendingGuests}}" wx:key="id"><template is="memberCard" data="{{item: item, busyMemberId: busyMemberId}}" /></block>
+  </view>
+  <view class="member-list">
+    <view class="title">当前家庭成员</view>
+    <block wx:for="{{members}}" wx:key="id"><template is="memberCard" data="{{item: item, busyMemberId: busyMemberId}}" /></block>
+    <view wx:if="{{!loading && !members.length && !error}}" class="member-state">暂无可展示的成员</view>
+  </view>
+</view>
+</block>

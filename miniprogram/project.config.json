@@ -1,0 +1,36 @@
+{
+  "appid": "touristappid",
+  "projectname": "family-meals-source",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": ".codegraph"
+      },
+      {
+        "type": "file",
+        "value": "verify_acceptance.js"
+      },
+      {
+        "type": "file",
+        "value": "test_unsubmitted_member.js"
+      },
+      {
+        "type": "file",
+        "value": "check_openapi_ops.js"
+      },
+      {
+        "type": "folder",
+        "value": "tests"
+      }
+    ]
+  }
+}

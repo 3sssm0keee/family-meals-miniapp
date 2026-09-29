@@ -1,0 +1,10 @@
+.aa-page { padding: 24rpx; min-height: 100vh; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.title { font-size: 32rpx; font-weight: 700; color: #2C332D; }
+.sub-title { font-size: 24rpx; color: #747D75; margin-top: 6rpx; }
+.audit-list { margin-top: 20rpx; }
+.a-card { padding: 24rpx; }
+.a-actor { font-size: 28rpx; font-weight: 700; color: #2C332D; }
+.a-summary { font-size: 26rpx; color: #555E57; margin-top: 10rpx; }
+.a-time { font-size: 22rpx; color: #8C968E; margin-top: 8rpx; }
+.member-state { padding: 28rpx; text-align: center; color: #747D75; }

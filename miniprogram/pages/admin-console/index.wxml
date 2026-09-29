@@ -1,0 +1,191 @@
+<view wx:if="{{adminAccessState === 'checking'}}" class="admin-access-state">正在核验掌勺人权限…</view>
+<view wx:if="{{adminAccessState === 'error'}}" class="admin-access-state">权限核验失败，请重试<button bindtap="refreshAdminAccess">重试核验</button></view>
+<block wx:if="{{adminAccessState === 'ready'}}">
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="admin-console-page safe-bottom">
+  <view wx:if="{{hasNoteUpdates}}" class="mori-card" bindtap="onGoReview">备注已更新，请注意 › 查看菜品备注</view>
+  <!-- 1. 顶部品牌栏：🍙 Tobacco‘s kitchen 掌勺管理端 -->
+  <view class="brand-top-bar">
+    <view class="mascot-badge">🍙</view>
+    <view class="brand-logo-text-group">
+      <view class="brand-logo-title">Tobacco‘s kitchen · 掌勺端</view>
+      <view class="brand-logo-sub">家庭美味总指挥 · 专属管理控制台</view>
+    </view>
+    <view class="top-nav-actions">
+      <view class="role-switch-badge" bindtap="onSwitchRole">
+        👤 {{currentMemberName}} (掌勺人)
+      </view>
+    </view>
+  </view>
+
+  <!-- 2. 掌勺人大厨横幅 -->
+  <view class="tobacco-banner admin-banner">
+    <view class="banner-content">
+      <view class="banner-main-title">掌勺人工作台 👨‍🍳</view>
+      <view class="banner-subtitle">统筹全家口味，一键审核点餐，定制属于家的特色菜谱~</view>
+      <view class="banner-meal-info">
+        <text class="meal-badge">今日{{currentMealType === 'LUNCH' ? '午餐' : '晚餐'}}</text>
+        <text class="date-badge">{{currentDate}}</text>
+      </view>
+    </view>
+    <view class="banner-illus-box">
+      <view class="illus-bubble">大厨说了算！♡</view>
+      <view class="illus-bowl-wrap">
+        <view class="illus-bowl-face">🧑‍🍳</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 今日点餐统筹状态 (KPI 看板) -->
+  <view class="tobacco-card status-kpi-card">
+    <view class="card-section-title">
+      <text class="section-bold">今日点餐动态</text>
+      <text class="section-tag">{{sessionStatusText}}</text>
+    </view>
+    <view class="kpi-grid">
+      <view class="kpi-item" wx:if="{{useMock}}">
+        <view class="kpi-num">{{submittedCount}}<text class="kpi-unit">/{{totalMembers}}人</text></view>
+        <view class="kpi-label">已提交点单</view>
+        <view class="kpi-sub" wx:if="{{unsubmittedCount > 0}}">{{unsubmittedNames}} 待选菜</view>
+        <view class="kpi-sub-green" wx:else>全员已齐备 ✓</view>
+      </view>
+      <view class="kpi-item" bindtap="onGoReview">
+        <view class="kpi-num highlight">{{pendingReviewCount === null ? "—" : pendingReviewCount}}<text class="kpi-unit">个规格</text></view>
+        <view class="kpi-label">待掌勺审核</view>
+        <view class="kpi-sub-accent">点击进入审核决议 ›</view>
+      </view>
+      <view class="kpi-item" bindtap="onGoDishes">
+        <view class="kpi-num">{{totalDishesCount === null ? "—" : totalDishesCount}}<text class="kpi-unit">道</text></view>
+        <view class="kpi-label">菜谱库</view>
+        <button wx:if="{{sessionStatusText === '加载失败'}}" catchtap="initData">重试加载</button>
+        <view class="kpi-sub">点击管理菜品 ›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 4. 核心管理功能矩阵 (Point 6 严格区分管理员界面) -->
+  <view class="section-header">
+    <text class="section-title-bold">掌勺人核心功能</text>
+    <text class="section-title-sub">管理员专属权限与操作</text>
+  </view>
+
+  <view class="admin-modules-grid">
+    <!-- 模块 1: 今日餐次审核与决议 -->
+    <view class="module-card card-review" bindtap="onGoReview">
+      <view class="module-icon-wrap">📝</view>
+      <view class="module-info">
+        <view class="module-title-row">
+          <text class="module-title">今日餐次审核</text>
+          <text class="badge-pending" wx:if="{{pendingReviewCount > 0}}">{{pendingReviewCount}}规格待审</text>
+        </view>
+        <view class="module-desc">批复家人们点单，增减份数，公布今日菜单决议</view>
+      </view>
+      <view class="module-arrow">›</view>
+    </view>
+
+    <!-- 模块 2: 菜谱库管理 (改名与换图) (Point 4) -->
+    <view class="module-card card-dishes" bindtap="onGoDishes">
+      <view class="module-icon-wrap">🍲</view>
+      <view class="module-info">
+        <view class="module-title-row">
+          <text class="module-title">菜谱库与重命名</text>
+          <text class="badge-tag">改名/换图</text>
+        </view>
+        <view class="module-desc">修改菜品名称、更换诱人实拍美图、配置口味规格</view>
+      </view>
+      <view class="module-arrow">›</view>
+    </view>
+
+    <!-- 模块 3: 录入新菜品 (Point 4) -->
+    <view class="module-card card-new-dish" bindtap="onGoNewDish">
+      <view class="module-icon-wrap">➕</view>
+      <view class="module-info">
+        <view class="module-title-row">
+          <text class="module-title">录入新菜品</text>
+          <text class="badge-tag">拍照/上传</text>
+        </view>
+        <view class="module-desc">拍照上传新菜品美图，录入特色描述，丰富家传菜谱</view>
+      </view>
+      <view class="module-arrow">›</view>
+    </view>
+
+    <!-- 模块 4: 家庭成员与权限管理 -->
+    <view class="module-card card-members" bindtap="onGoMembers">
+      <view class="module-icon-wrap">👨‍👩‍👧‍👦</view>
+      <view class="module-info">
+        <view class="module-title-row">
+          <text class="module-title">家庭成员与邀请</text>
+        </view>
+        <view class="module-desc">管理家庭成员身份，生成邀请码，邀请家人一起点餐</view>
+      </view>
+      <view class="module-arrow">›</view>
+    </view>
+
+    <!-- 模块 5: 决议历史与审计追溯 -->
+    <view class="module-card card-audit" bindtap="onGoAudit">
+      <view class="module-icon-wrap">📜</view>
+      <view class="module-info">
+        <view class="module-title-row">
+          <text class="module-title">掌勺审计与历史</text>
+        </view>
+        <view class="module-desc">回溯过往审核操作与餐次决议，保障家庭用餐公平</view>
+      </view>
+      <view class="module-arrow">›</view>
+    </view>
+    <view class="module-card card-dishes" bindtap="onGoHistoryCleanup">
+      <view class="module-icon-wrap">🧹</view>
+      <view class="module-info">
+        <view class="module-title-row"><text class="module-title">历史菜品清理</text></view>
+        <view class="module-desc">核对旧版本软删除菜品，再决定是否彻底清理</view>
+      </view>
+      <view class="module-arrow">›</view>
+    </view>
+    <view class="module-card card-dishes" bindtap="onGoFileCleanup">
+      <view class="module-icon-wrap">🖼️</view>
+      <view class="module-info">
+        <view class="module-title-row"><text class="module-title">无引用图片清理</text></view>
+        <view class="module-desc">检查无菜品引用的图片与清理任务状态</view>
+      </view>
+      <view class="module-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 5. 菜谱快速改名与换图快捷列表 (Point 4) -->
+  <view class="tobacco-card quick-dishes-card">
+    <view class="quick-dishes-header">
+      <view class="title-wrap">
+        <text class="title-bold">快捷菜谱维护</text>
+        <text class="title-sub">点击即可修改菜名、更换高清照片</text>
+      </view>
+      <button class="btn-quick-add" bindtap="onGoNewDish">+ 新建菜品</button>
+    </view>
+
+    <view class="quick-dishes-list">
+      <view class="quick-dish-item" wx:for="{{previewDishes}}" wx:key="id">
+        <image class="quick-dish-thumb" src="{{item.image ? item.image.url : 'https://images.unsplash.com/photo-1544025162-d76694265947?w=200'}}" mode="aspectFill" />
+        <view class="quick-dish-main">
+          <view class="quick-dish-name-row">
+            <text class="quick-dish-name">{{item.name}}</text>
+            
+          </view>
+          <view class="quick-dish-desc">{{item.description || '暂无口味描述'}}</view>
+          <view class="quick-dish-variants">{{item.variants.length || 1}} 种分量规格</view>
+        </view>
+        <button class="tobacco-btn-pill btn-quick-edit" bindtap="onEditDish" data-id="{{item.id}}">
+          改名/换图 ✎
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 6. 底部视图切换与返回 -->
+  <view class="bottom-action-box">
+    <button class="tobacco-btn-pill btn-return-home" bindtap="onReturnHome">
+      返回家庭选菜主页 🍙
+    </button>
+    <button wx:if="{{useMock}}" class="btn-toggle-view" bindtap="onSwitchToUserView">
+      切换为普通成员体验视角 (小明)
+    </button>
+  </view>
+</view>
+</block>

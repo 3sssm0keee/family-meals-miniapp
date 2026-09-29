@@ -1,0 +1,11 @@
+import 'reflect-metadata';
+import 'dotenv/config';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module.js';
+import { configureApp } from './common/configure-app.js';
+import { validateCloudrunConfig } from './common/cloudrun-config.js';
+validateCloudrunConfig();
+const app=await NestFactory.create(AppModule,{logger:['error','warn']});
+await configureApp(app);
+app.enableShutdownHooks();
+await app.listen(Number(process.env.PORT??3000),process.env.HOST??'127.0.0.1');

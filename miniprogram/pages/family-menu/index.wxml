@@ -1,0 +1,101 @@
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="fm-page safe-bottom">
+  <!-- 1. 顶部品牌栏 -->
+  <view class="brand-top-bar">
+    <view class="mascot-badge">🍙</view>
+    <view class="brand-logo-text-group">
+      <view class="brand-logo-title">Tobacco‘s kitchen</view>
+      <view class="brand-logo-sub">一起吃饭 · 更有家的味道</view>
+    </view>
+    <view class="top-nav-actions" wx:if="{{isAdmin}}">
+      <navigator url="/pages/admin-review/index" class="btn-review-link">
+        掌勺人审核 >
+      </navigator>
+    </view>
+  </view>
+
+  <!-- 2. 暖橙主横幅 (家庭菜单) -->
+  <view class="tobacco-banner">
+    <view class="banner-content">
+      <view class="banner-main-title">家庭菜单</view>
+      <view class="banner-subtitle">
+        {{session.serviceDate || '今日'}} · {{session.mealType === 'LUNCH' ? '午餐' : '晚餐'}} · 全家点餐汇总
+      </view>
+    </view>
+    <view class="banner-illus-box">
+      <view class="illus-bubble">幸福味道！♡</view>
+      <view class="illus-bowl-wrap">
+        <view class="illus-bowl-face">🍲</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 菜品列表 -->
+  <view wx:if="{{loading}}" class="empty-view">正在加载当前餐次菜单…</view>
+  <view wx:elif="{{loadError}}" class="empty-view">
+    <view>菜单加载失败：{{loadError}}</view>
+    <button bindtap="onRetry">重新加载</button>
+  </view>
+  <view wx:else class="dishes-board">
+    <block wx:for="{{dishes}}" wx:key="dishId">
+      <view class="dish-board-card">
+        <!-- 菜品头 -->
+        <view class="flex-between dish-head">
+          <view class="dish-name-row">
+            <text class="dish-name">{{item.name}}</text>
+            <text wx:if="{{item.dishDeleted}}" class="deleted-tag">已删除</text>
+            <text wx:if="{{item.kind === 'TEMPORARY'}}" class="temp-tag">特别临时菜</text>
+          </view>
+          <view class="total-people-badge">
+            共 {{item.uniqueParticipantCount}} 人想吃
+          </view>
+        </view>
+
+        <!-- 各规格统计与厨房决定 -->
+        <view class="variant-stat-list">
+          <block wx:for="{{item.variants}}" wx:for-item="v" wx:key="itemId">
+            <view class="variant-stat-item">
+              <view class="flex-between">
+                <view class="v-stat-name">
+                  <text class="v-label">{{v.name}}</text>
+                  <text class="v-people-num">（{{v.participantCount}} 人点选）</text>
+                </view>
+
+                <!-- 决策与制作结果 -->
+                <view>
+                  <block wx:if="{{v.decision === 'CONFIRMED'}}">
+                    <text class="status-badge badge-confirmed">已确认制作 {{v.plannedQuantity}} 份</text>
+                  </block>
+                  <block wx:elif="{{v.decision === 'CANCELLED'}}">
+                    <text class="status-badge badge-cancelled">已取消制作</text>
+                  </block>
+                  <block wx:else>
+                    <text class="status-badge badge-pending">待掌勺人审核</text>
+                  </block>
+                </view>
+              </view>
+
+              <view wx:if="{{v.needsReview && v.decision !== 'UNREVIEWED'}}" class="status-badge badge-pending">需求已更新，待掌勺人复核；以上为上次决定</view>
+              <view class="v-portion-tip">{{v.portionDescription}}</view>
+              <view wx:if="{{v.decision === 'CANCELLED' && v.reason}}" class="v-cancel-reason">
+                取消原因：{{v.reason}}
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <view wx:if="{{dishes.length === 0}}" class="empty-view">
+      <text class="empty-icon">🍲</text>
+      <view class="empty-title">当前餐次暂无点餐记录</view>
+      <view class="empty-sub">快去挑选喜爱的美味吧~</view>
+    </view>
+  </view>
+
+  <!-- 底部治愈手绘金句 -->
+  <view class="doodle-footer-quote">
+    一家人，一顿饭，就是最好的时光 ♡
+  </view>
+</view>

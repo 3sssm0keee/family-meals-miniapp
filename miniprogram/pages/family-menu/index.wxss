@@ -1,0 +1,232 @@
+.fm-page {
+  padding: 24rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 1. 顶部品牌栏 */
+.brand-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+.mascot-badge {
+  font-size: 48rpx;
+  margin-right: 12rpx;
+}
+.brand-logo-text-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.brand-logo-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #2D2B2A;
+  letter-spacing: 0.5rpx;
+  white-space: nowrap;
+}
+.brand-logo-sub {
+  font-size: 20rpx;
+  color: #8E827A;
+  letter-spacing: 1rpx;
+  margin-top: 2rpx;
+}
+.btn-review-link {
+  font-size: 22rpx;
+  color: #EE7B57;
+  background: #FFEFEA;
+  padding: 10rpx 20rpx;
+  border-radius: 24rpx;
+  border: 1rpx solid #F8D8CE;
+  font-weight: 700;
+}
+
+/* 2. 暖橙主横幅 */
+.tobacco-banner {
+  background: linear-gradient(135deg, #F07C56 0%, #EE6F47 100%);
+  border-radius: 28rpx;
+  padding: 32rpx 28rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8rpx 24rpx rgba(238, 123, 87, 0.28);
+  margin-bottom: 24rpx;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+}
+.banner-content {
+  flex: 1;
+}
+.banner-main-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  margin-bottom: 8rpx;
+  letter-spacing: 1rpx;
+}
+.banner-subtitle {
+  font-size: 22rpx;
+  opacity: 0.92;
+  line-height: 1.4;
+}
+.banner-illus-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 16rpx;
+}
+.illus-bubble {
+  background: #FFFFFF;
+  color: #EE7B57;
+  font-size: 18rpx;
+  font-weight: 700;
+  padding: 6rpx 14rpx;
+  border-radius: 16rpx;
+  white-space: nowrap;
+  margin-bottom: 8rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+}
+.illus-bowl-wrap {
+  width: 90rpx;
+  height: 90rpx;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.illus-bowl-face {
+  font-size: 48rpx;
+}
+
+/* 3. 菜品看板 */
+.dishes-board {
+  margin-bottom: 24rpx;
+}
+.dish-board-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  border: 1rpx solid #F3EBE2;
+  box-shadow: 0 4rpx 16rpx rgba(184, 150, 126, 0.08);
+  margin-bottom: 20rpx;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dish-head {
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #F2EAE1;
+}
+.dish-name-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.dish-name {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #2D2B2A;
+}
+.temp-tag {
+  font-size: 18rpx;
+  color: #FFFFFF;
+  background: #FF9800;
+  padding: 2rpx 10rpx;
+  border-radius: 8rpx;
+  font-weight: 600;
+}
+.total-people-badge {
+  font-size: 22rpx;
+  color: #EE7B57;
+  background: #FFF2ED;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-weight: 700;
+}
+.variant-stat-list {
+  margin-top: 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+.variant-stat-item {
+  background: #FAF6F1;
+  padding: 18rpx 20rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid #EFE6DC;
+}
+.v-stat-name {
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+.v-label {
+  font-weight: 700;
+  color: #2D2B2A;
+}
+.v-people-num {
+  font-size: 22rpx;
+  color: #8C8078;
+}
+.status-badge {
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+  font-weight: 600;
+}
+.badge-confirmed {
+  background: #E8F7E8;
+  color: #389E0D;
+}
+.badge-cancelled {
+  background: #FFF1F0;
+  color: #CF1322;
+}
+.badge-pending {
+  background: #FFF7E6;
+  color: #D48806;
+}
+.v-portion-tip {
+  font-size: 20rpx;
+  color: #9A8E85;
+  margin-top: 6rpx;
+}
+.v-cancel-reason {
+  font-size: 20rpx;
+  color: #CF1322;
+  margin-top: 6rpx;
+}
+.empty-view {
+  text-align: center;
+  padding: 80rpx 0;
+}
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+.empty-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #4A423D;
+}
+.empty-sub {
+  font-size: 22rpx;
+  color: #9A8E85;
+  margin-top: 8rpx;
+}
+
+/* 底部治愈手绘金句 */
+.doodle-footer-quote {
+  text-align: center;
+  font-size: 22rpx;
+  color: #B0A298;
+  margin: 30rpx 0 20rpx;
+  letter-spacing: 2rpx;
+}
+.deleted-tag { margin-left: 12rpx; padding: 4rpx 10rpx; border-radius: 12rpx; color: #a64036; background: #fff0ee; font-size: 21rpx; }

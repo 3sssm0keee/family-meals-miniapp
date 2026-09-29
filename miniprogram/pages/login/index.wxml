@@ -1,0 +1,18 @@
+<view class="login-page safe-bottom">
+  <view class="mori-card login-welcome">
+    <view class="login-mascot">🍙</view>
+    <view class="brand-logo-title">Tobacco‘s kitchen</view>
+    <view class="login-heading">家人的餐桌，等你入座</view>
+    <view class="login-description">登录后，已有家庭身份的家人将直接进入厨房。首次到访，请使用邀请码注册身份。</view>
+    <button class="tobacco-btn-pill login-action" loading="{{loading}}" disabled="{{loading}}" bindtap="onLogin">微信登录</button>
+    <view class="login-divider"><view></view><text>或者</text><view></view></view>
+    <button class="invite-choice" disabled="{{loading}}" bindtap="onShowInvite">使用邀请码登录</button>
+    <view wx:if="{{showInvite}}" class="invite-login-form">
+      <input class="login-input" placeholder="填写家人能认出的昵称" maxlength="40" value="{{displayName}}" bindinput="onNameInput" />
+      <input class="login-input" placeholder="请输入邀请码" maxlength="128" value="{{inviteCode}}" bindinput="onInviteInput" />
+      <button class="tobacco-btn-pill login-action" loading="{{loading}}" disabled="{{loading}}" bindtap="onInviteLogin">登录并验证</button>
+    </view>
+    <view class="login-error" wx:if="{{error}}">{{error}}</view>
+    <view class="login-description">访客请通过家人分享的邀请卡片进入。</view>
+  </view>
+</view>

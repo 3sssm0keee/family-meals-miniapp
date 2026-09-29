@@ -1,0 +1,104 @@
+<view wx:if="{{adminAccessState === 'checking'}}" class="admin-access-state">正在核验掌勺人权限…</view>
+<view wx:if="{{adminAccessState === 'error'}}" class="admin-access-state">权限核验失败，请重试<button bindtap="refreshAdminAccess">重试核验</button></view>
+<block wx:if="{{adminAccessState === 'ready'}}">
+<view wx:if="{{useMock}}" class="mock-indicator">演示模式 · 数据不代表真实家庭</view>
+<view class="ade-page safe-bottom">
+  <!-- 顶部品牌栏 -->
+  <view class="brand-top-bar">
+    <view class="mascot-badge">🍙</view>
+    <view class="brand-logo-text-group">
+      <view class="brand-logo-title">Tobacco‘s kitchen</view>
+      <view class="brand-logo-sub">掌勺人菜谱管理 · 让家的味道触手可及</view>
+    </view>
+  </view>
+
+  <!-- 页面标题卡 -->
+  <view class="tobacco-banner">
+    <view class="banner-content">
+      <view class="banner-main-title">{{isEditing ? '修改与重命名菜谱' : '录入新菜谱'}}</view>
+      <view class="banner-subtitle">添加美味图片与特色描述，丰富今日菜单~</view>
+    </view>
+    <view class="banner-illus-box">
+      <view class="illus-bubble">大厨出手！♡</view>
+      <view class="illus-bowl-wrap">
+        <view class="illus-bowl-face">🧑‍🍳</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 1. 菜品配图上传区 (Point 4) -->
+  <view class="form-card tobacco-card">
+    <view class="form-label-row">
+      <text class="form-label-title">📷 菜品配图</text>
+      <text class="form-label-tip">点击更换或上传真实照片</text>
+    </view>
+    <view class="dish-image-uploader" bindtap="onChooseDishImage">
+      <image class="preview-img" wx:if="{{imageUrl}}" src="{{imageUrl}}" mode="aspectFill" />
+      <view class="upload-badge">{{uploading ? "上传中…" : "点击选择图片"}}</view>
+    </view>
+  </view>
+
+  <!-- 2. 菜品基础信息编辑 (Point 4 命名与文字更改) -->
+  <view class="form-card tobacco-card">
+    <view class="form-group">
+      <view class="form-label-title">菜品名称 *</view>
+      <input 
+        class="form-input" 
+        placeholder="如：红烧肉、可乐鸡翅..." 
+        value="{{name}}" 
+        bindinput="onNameInput" />
+    </view>
+
+    <view class="form-group">
+      <view class="form-label-title">菜品介绍与口感描述</view>
+      <textarea 
+        class="form-textarea" 
+        placeholder="详细说明这道菜的口味特色、用料特点..." 
+        value="{{description}}" 
+        bindinput="onDescInput" />
+    </view>
+
+  </view>
+
+  <!-- 3. 版本规格设定 (Point 4 多规格维护) -->
+  <view class="form-card tobacco-card">
+    <view class="v-header flex-between">
+      <view class="form-label-title">🥢 版本规格 (至少1个)</view>
+      <view class="btn-add-v" bindtap="onAddVariant">+ 增加规格</view>
+    </view>
+
+    <view class="v-list">
+      <view class="v-row-card" wx:for="{{variants}}" wx:key="index">
+        <view class="v-card-top flex-between">
+          <text class="v-index-tag">规格 {{index + 1}}</text>
+          <text class="v-btn-del" wx:if="{{variants.length > 1}}" bindtap="onRemoveVariant" data-idx="{{index}}">删除</text>
+        </view>
+        <input 
+          class="form-input v-input" 
+          placeholder="规格名 (如: 普通版 / 少油版 / 香辣微麻版)" 
+          value="{{item.name}}" 
+          bindinput="onVNameInput" 
+          data-idx="{{index}}" />
+        <input 
+          class="form-input v-input mt-2" 
+          placeholder="分量说明 (如: 一份约供两人分享)" 
+          value="{{item.portionDescription}}" 
+          bindinput="onVPortionInput" 
+          data-idx="{{index}}" />
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{conflict}}" class="form-card">保存未全部完成，草稿仍在。请核对服务器最新内容。<button bindtap="onReloadDish">放弃草稿并重新载入</button></view>
+  <view wx:if="{{isEditing}}" class="submit-box">
+    <button type="warn" bindtap="onDeleteDish" loading="{{deleting}}" disabled="{{saving || uploading || deleting || conflict}}">删除整道菜</button>
+  </view>
+  <dish-delete-confirm preview="{{deletePreview}}" deleting="{{deleting}}" error="{{deleteError}}" blocked="{{deleteBlocked}}" bind:confirm="onConfirmDishDelete" bind:cancel="onCancelDishDelete" bind:reconcile="onReconcileDishDelete" />
+  <!-- 底部保存按钮 -->
+  <view class="submit-box">
+    <button class="tobacco-btn-pill btn-save-dish" bindtap="onSaveDish" loading="{{saving}}" disabled="{{saving || uploading || deleting || conflict}}">
+      {{isEditing ? '保存修改并同步菜谱 →' : '录入菜谱总库 →'}}
+    </button>
+  </view>
+</view>
+</block>

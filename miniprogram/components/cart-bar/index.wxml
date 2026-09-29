@@ -1,0 +1,17 @@
+<view class="cart-bar-container safe-bottom" wx:if="{{selectedCount > 0}}">
+  <view class="cart-bar">
+    <view class="cart-info" bindtap="onTapCart">
+      <view class="cart-badge-icon">
+        <text class="cart-icon">🍱</text>
+        <text class="cart-num">{{selectedCount}}</text>
+      </view>
+      <view class="cart-text">
+        <text class="cart-status">已选 {{selectedCount}} 项菜品规格</text>
+        <text class="cart-hint">点击查看已选菜品明细</text>
+      </view>
+    </view>
+    <button class="mori-btn-primary submit-btn" bindtap="onTapSubmit">
+      选好了
+    </button>
+  </view>
+</view>

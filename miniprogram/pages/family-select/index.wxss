@@ -1,0 +1,17 @@
+.fs-page { padding: 24rpx; min-height: 100vh; }
+.title { font-size: 32rpx; font-weight: 700; color: #2C332D; }
+.sub-title { font-size: 24rpx; color: #747D75; margin-top: 6rpx; }
+.family-list { margin-top: 20rpx; }
+.family-item { display: flex; justify-content: space-between; align-items: center; padding: 28rpx; }
+.family-item.active-family { border: 2rpx solid #5B8266; background: #EBF1EC; }
+.f-name { font-size: 30rpx; font-weight: 700; color: #2C332D; }
+.f-role { font-size: 24rpx; color: #5B8266; margin-top: 8rpx; }
+.action-section { margin-top: 40rpx; }
+.w-full { width: 100% !important; }
+.mt-3 { margin-top: 20rpx; }
+.invite-card { padding:32rpx; margin-top:28rpx; }
+.invite-input { height:96rpx; padding:0 24rpx; background:#FFF5ED; border-radius:20rpx; margin:28rpx 0; font-size:26rpx; }
+.invite-submit { width:100%; display:flex; align-items:center; justify-content:center; min-height:88rpx; font-size:28rpx; margin:20rpx 0; }
+.invite-error {color:#BD4D37;font-size:26rpx;}
+.sub-title {line-height:1.7;}
+.retry-button {font-size:24rpx; margin-top:24rpx;}
