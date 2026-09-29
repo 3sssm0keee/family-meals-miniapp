@@ -50,9 +50,14 @@
       "sha256": "d2483881220720ea0886db192db2e2397bb177b6e3d0cc691909125e1c17ba3a"
     },
     {
+      "path": "README.en.md",
+      "bytes": 16918,
+      "sha256": "a28bb3a271fa8cd8af2abdbf590985e92d66618755e7ed29d080fc2f9ed01d03"
+    },
+    {
       "path": "README.md",
-      "bytes": 15022,
-      "sha256": "e77773188a3b3df526a979aed96a2ccf57ca556894abe902eeb9c65419f62f86"
+      "bytes": 15602,
+      "sha256": "3814cfed9a29c1d935fd521892ead6d8c439a69194642383d0ded1b2e01eaf6a"
     },
     {
       "path": "backend/.env.example",
@@ -1010,7 +1015,7 @@
   "documentation_update": {
     "date": "2026-09-29",
     "file": "README.md",
-    "scope": "pages, usage, technology stack, deployment prerequisites and steps; source unchanged"
+    "scope": "Chinese and English README with page list, usage, deployment and explanation of missing photos in development screenshots"
   },
   "showcase": {
     "file": "docs/screenshots/development-showcase.png",
